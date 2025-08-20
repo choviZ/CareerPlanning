@@ -3,8 +3,10 @@ package com.zcw.cpbackend.controller;
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
 import com.zcw.cpbackend.model.dto.AddQuestionRequest;
+import com.zcw.cpbackend.model.dto.DoAssessmentRequest;
 import com.zcw.cpbackend.model.dto.UpdateQuestionRequest;
 import com.zcw.cpbackend.model.vo.AssessmentQuestionVo;
+import com.zcw.cpbackend.model.vo.AssessmentResultVo;
 import com.zcw.cpbackend.service.AssessmentQuestionService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +21,17 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/assessment/question")
+@RequestMapping("/assessment")
 public class AssessmentQuestionController {
 
     @Resource
     private AssessmentQuestionService assessmentQuestionService;
+
+    @PostMapping("/do")
+    public BaseResponse<AssessmentResultVo> doAssessment(@RequestBody DoAssessmentRequest request) {
+        AssessmentResultVo result = assessmentQuestionService.doAssessment(request.getUserAnswers(), request.getTestType());
+        return ResultUtils.success(result);
+    }
 
     // region 增删改查
     /**

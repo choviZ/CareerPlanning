@@ -2,7 +2,6 @@ package com.zcw.cpbackend.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
-import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.zcw.cpbackend.exception.BusinessException;
@@ -13,15 +12,20 @@ import com.zcw.cpbackend.model.dto.OptionDTO;
 import com.zcw.cpbackend.model.dto.UpdateQuestionRequest;
 import com.zcw.cpbackend.model.entity.AssessmentQuestion;
 import com.zcw.cpbackend.mapper.AssessmentQuestionMapper;
-import com.zcw.cpbackend.model.enums.TestType;
+import com.zcw.cpbackend.model.enums.TestTypeEnum;
 import com.zcw.cpbackend.model.vo.AssessmentQuestionVo;
+import com.zcw.cpbackend.model.vo.AssessmentResultVo;
 import com.zcw.cpbackend.service.AssessmentQuestionService;
+import com.zcw.cpbackend.service.AssessmentResultService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +36,69 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class AssessmentQuestionServiceImpl extends ServiceImpl<AssessmentQuestionMapper, AssessmentQuestion> implements AssessmentQuestionService {
+
+    @Resource
+    private AssessmentResultService assessmentResultService;
+
+    @Override
+    public AssessmentResultVo doAssessment(List<String> userAnswers, String testType) {
+        TestTypeEnum testTypeEnum = TestTypeEnum.getEnumByValue(testType);
+        ThrowUtils.throwIf(testTypeEnum == null, ErrorCode.PARAMS_ERROR, "测评类型错误");
+        // 评估-mbti
+        // 记录每个维度的得分
+        HashMap<String, Integer> map = new HashMap<>();
+        // 1. 查询到题目列表
+        List<AssessmentQuestionVo> questionList = this.queryQuestion(testType);
+        // 2. 遍历用户答案
+        for (int i = 0; i < questionList.size(); i++) {
+            // 当前题目的全部选项
+            List<OptionDTO> options = questionList.get(i).getOptions();
+            for (OptionDTO option : options) {
+                // 匹配用户的选项
+                if (option.getKey().equals(userAnswers.get(i))) {
+                    String dimension = option.getDimension();
+                    // 该选项偏向中立，不做处理
+                    if (dimension == null) {
+                        continue;
+                    }
+                    Integer score = map.getOrDefault(dimension, 0);
+                    map.put(dimension, score + 1);
+                }
+            }
+        }
+        // 3. 计算结果
+        String dimensionScores = JSONUtil.toJsonStr(map);
+        String result = calculateResult(map);
+        // 4. 保存答题记录
+        AssessmentResultVo resultVo = AssessmentResultVo.builder()
+                // TODO userId
+                .userId(1L)
+                .testType(testType)
+                .resultCode(result)
+                .dimensionScores(dimensionScores)
+                .createdAt(LocalDateTime.now())
+                .build();
+        boolean saved = assessmentResultService.save(AssessmentResultVo.voToObj(resultVo));
+        ThrowUtils.throwIf(!saved, ErrorCode.OPERATION_ERROR, "保存测评记录失败");
+        return resultVo;
+    }
+
+    private String calculateResult(Map<String, Integer> map) {
+        // 按维度数量降序排序
+        List<Map.Entry<String, Integer>> sortedDimensions = map.entrySet().stream()
+                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+                .toList();
+        // 检查是否有足够的维度
+        if (sortedDimensions.size() < 4) {
+            throw new IllegalArgumentException("维度数量不足，无法生成MBTI类型");
+        }
+        // 取数量最高的4个维度拼接结果
+        StringBuilder mbtiResult = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            mbtiResult.append(sortedDimensions.get(i).getKey());
+        }
+        return mbtiResult.toString();
+    }
 
     @Override
     public boolean addQuestion(AddQuestionRequest request) {
@@ -93,7 +160,7 @@ public class AssessmentQuestionServiceImpl extends ServiceImpl<AssessmentQuestio
     @Override
     public List<AssessmentQuestionVo> queryQuestion(String testType) {
         // 校验
-        TestType typeEnum = TestType.getEnumByValue(testType);
+        TestTypeEnum typeEnum = TestTypeEnum.getEnumByValue(testType);
         ThrowUtils.throwIf(typeEnum == null, ErrorCode.PARAMS_ERROR, "测试类型错误");
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq(AssessmentQuestion::getTestType, testType);

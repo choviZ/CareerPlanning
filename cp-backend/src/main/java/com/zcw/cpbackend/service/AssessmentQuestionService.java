@@ -1,11 +1,11 @@
 package com.zcw.cpbackend.service;
 
-import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import com.zcw.cpbackend.model.dto.AddQuestionRequest;
 import com.zcw.cpbackend.model.dto.UpdateQuestionRequest;
 import com.zcw.cpbackend.model.entity.AssessmentQuestion;
 import com.zcw.cpbackend.model.vo.AssessmentQuestionVo;
+import com.zcw.cpbackend.model.vo.AssessmentResultVo;
 
 import java.util.List;
 
@@ -15,6 +15,14 @@ import java.util.List;
  * @author zcw
  */
 public interface AssessmentQuestionService extends IService<AssessmentQuestion> {
+
+    /**
+     * 测评
+     * @param userAnswers 用户答案
+     * @param testType 测评类型
+     * @return 测评结果
+     */
+    AssessmentResultVo doAssessment(List<String> userAnswers, String testType);
 
     /**
      * 添加题目
