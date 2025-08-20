@@ -9,8 +9,8 @@
 
     <!-- 中间菜单项 -->
     <el-col :span="16" class="menu-col">
-      <el-menu mode="horizontal" class="menu-container">
-        <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path">
+      <el-menu mode="horizontal" class="menu-container" :router="true">
+        <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path" :route="{ path: item.path }">
           {{ item.label }}
         </el-menu-item>
       </el-menu>

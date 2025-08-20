@@ -1,7 +1,9 @@
 <template>
   <el-container class="layout-container">
     <el-header><GlobalHeader /></el-header>
-    <el-main><router-view /></el-main>
+    <el-main>
+      <router-view />
+    </el-main>
     <el-footer class="footer">© 2025 Career Planning</el-footer>
   </el-container>
 </template>
