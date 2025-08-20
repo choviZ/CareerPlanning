@@ -1,0 +1,29 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* 移除Element Plus容器的默认边距 */
+.el-container {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 确保头部和底部没有额外边距 */
+.el-header,
+.el-footer {
+  padding: 0 !important;
+}
+
+/* 取消Element Plus水平菜单的底部边框 */
+.el-menu--horizontal.el-menu {
+  border-bottom: none !important;
+}
