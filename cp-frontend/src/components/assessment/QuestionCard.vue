@@ -11,12 +11,7 @@
 
     <div class="options-container">
       <el-radio-group v-model="selectedOption" class="option-group">
-        <el-radio
-          v-for="option in question.options"
-          :key="option.key"
-          :label="option.key"
-          class="option-item"
-        >
+        <el-radio v-for="option in question.options" :key="option.key" :label="option.key" class="option-item">
           <div class="option-content">
             <span class="option-key">{{ option.key }}</span>
             <span class="option-value">{{ option.value }}</span>
@@ -26,18 +21,10 @@
     </div>
 
     <div class="navigation-buttons">
-      <el-button
-        type="default"
-        :disabled="currentIndex === 0"
-        @click="handlePrevious"
-      >
+      <el-button type="default" :disabled="currentIndex === 0" @click="handlePrevious">
         上一题
       </el-button>
-      <el-button
-        type="primary"
-        :disabled="!selectedOption"
-        @click="handleNext"
-      >
+      <el-button type="primary" :disabled="!selectedOption" @click="handleNext">
         {{ isLastQuestion ? '提交' : '下一题' }}
       </el-button>
     </div>
@@ -152,7 +139,6 @@ const handleNext = () => {
 }
 
 .option-item {
-  height: 40px;
   margin-bottom: 15px;
   padding: 12px 15px;
   border-radius: 4px;
@@ -160,6 +146,7 @@ const handleNext = () => {
   transition: all 0.3s;
   width: 100%;
   display: flex;
+  margin-right: 0 !important;
 }
 
 .option-item:hover {
@@ -170,7 +157,7 @@ const handleNext = () => {
 
 .option-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   width: 100%;
 }
 
@@ -193,7 +180,6 @@ const handleNext = () => {
   display: block;
   width: 100%;
   word-break: break-word;
-  padding-top: 5px;
 }
 
 .navigation-buttons {
