@@ -1,6 +1,7 @@
 package com.zcw.cpbackend.exception;
 
 
+import cn.dev33.satoken.exception.NotLoginException;
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -36,5 +37,11 @@ public class GlobalExceptionHandler {
         log.error("参数校验未通过", e);
         String defaultMessage = Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage();
         return ResultUtils.error(ErrorCode.PARAMS_ERROR, defaultMessage);
+    }
+
+    @ExceptionHandler(NotLoginException.class)
+    public BaseResponse<?> NotLoginHandler(MethodArgumentNotValidException e) {
+        log.error("not login");
+        return ResultUtils.error(ErrorCode.NOT_LOGIN_ERROR, "请先登录");
     }
 }

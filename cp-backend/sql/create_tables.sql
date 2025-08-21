@@ -2,6 +2,26 @@ CREATE DATABASE IF NOT EXISTS cp;
 
 use cp;
 
+-- 用户表
+create table if not exists user
+(
+    id            bigint auto_increment comment 'id' primary key,
+    user_account  varchar(256)                           not null comment '账号',
+    user_password varchar(512)                           not null comment '密码',
+    user_name     varchar(256)                           null comment '用户昵称',
+    user_avatar   varchar(1024)                          null comment '用户头像',
+    user_profile  varchar(512)                           null comment '用户简介',
+    user_role     varchar(256) default 'user'            not null comment '用户角色：user/admin',
+    edit_time     datetime     default CURRENT_TIMESTAMP not null comment '编辑时间',
+    create_at     datetime     default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_at     datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    is_deleted    tinyint      default 0                 not null comment '是否删除',
+    UNIQUE KEY uk_userAccount (user_account),
+    INDEX idx_userName (user_name)
+) ENGINE = InnoDB
+  DEFAULT CHAR SET utf8mb4
+  collate = utf8mb4_unicode_ci comment '用户表';
+
 -- 评估表
 CREATE TABLE assessment_question
 (
@@ -30,7 +50,7 @@ CREATE TABLE assessment_result
     result_code      VARCHAR(20) NOT NULL COMMENT '结果代码（如INTJ、RIA等）',
     dimension_scores JSON        NOT NULL COMMENT '各维度得分详情',
     created_at       DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '完成时间',
-    is_deleted        TINYINT DEFAULT 0 COMMENT '是否删除（0-否，1-是）',
+    is_deleted TINYINT DEFAULT 0 COMMENT '是否删除（0-否，1-是）',
     INDEX idx_user_id (user_id),
     INDEX idx_test_type (test_type),
     INDEX idx_result_code (result_code)
@@ -49,6 +69,7 @@ CREATE TABLE career
     average_salary  VARCHAR(100) COMMENT '平均薪资范围',
     created_at      DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at      DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_deleted TINYINT DEFAULT 0 COMMENT '是否删除（0-否，1-是）',
     INDEX idx_name (name)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -58,9 +79,11 @@ CREATE TABLE career
 CREATE TABLE result_career_mapping
 (
     id                  BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
-    test_type           VARCHAR(20) NOT NULL COMMENT '测评类型',
-    result_code         VARCHAR(20) NOT NULL COMMENT '测评结果代码',
-    career_id           BIGINT      NOT NULL COMMENT '职业ID',
+    test_type   VARCHAR(20)  NOT NULL COMMENT '测评类型',
+    result_code VARCHAR(20)  NOT NULL COMMENT '测评结果代码',
+    career_id   BIGINT       NOT NULL COMMENT '职业ID',
+    name        VARCHAR(100) NOT NULL COMMENT '职业名称',
+    description TEXT COMMENT '职业描述',
     compatibility_score INT COMMENT '兼容性评分（0-100）',
     created_at          DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     UNIQUE KEY uk_result_career (result_code, career_id, test_type),
