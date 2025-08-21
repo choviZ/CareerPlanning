@@ -10,24 +10,82 @@
     <!-- 中间菜单项 -->
     <el-col :span="16" class="menu-col">
       <el-menu mode="horizontal" class="menu-container" :router="true">
-        <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path" :route="{ path: item.path }">
+        <el-menu-item v-for="item in menuItems" :key="item.path" :index="item.path"
+                      :route="{ path: item.path }">
           {{ item.label }}
         </el-menu-item>
       </el-menu>
     </el-col>
 
-    <!-- 右侧登录按钮 -->
+    <!-- 右侧登录按钮或用户头像 -->
     <el-col :span="4" class="login-col">
-      <el-button type="primary" class="login-btn">登录</el-button>
+      <div v-if="!userStore.currentUser" class="header-right">
+        <el-button type="primary" class="login-btn" @click="toLoginPage">登录</el-button>
+      </div>
+      <div v-else class="user-info">
+        <el-dropdown trigger="click" @command="handleCommand">
+          <span class="el-dropdown-link">
+            <el-avatar :size="32"
+                       :src="userStore.currentUser.userAvatar || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epict.png'" />
+            <span
+              class="username">{{ userStore.currentUser.userName || userStore.currentUser.userAccount
+              }}</span>
+            <el-icon class="el-icon--right"><arrow-down /></el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </div>
     </el-col>
   </el-row>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { ArrowDown } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
+import { userLogout } from '@/api/userController'
+
+const userStore = useUserStore()
+const router = useRouter()
+
+onMounted(() => {
+  userStore.fetchLoginUser()
+})
+
 const menuItems = [
   { path: '/', label: '首页' },
   { path: '/assessment', label: '职业测评' }
 ]
+
+const toLoginPage = () => {
+  router.push('/user/login')
+}
+
+const handleCommand = async (command: string) => {
+  if (command === 'logout') {
+    await doLayout()
+  }
+}
+
+/**
+ * 退出登录
+ */
+const doLayout = async () => {
+  const res = await userLogout()
+  if (res.data.code === 200 && res.data.data) {
+    ElMessage.success('退出成功')
+    userStore.clearLoginState()
+    await router.push('/')
+  }else {
+    ElMessage.error(res.data.message || '退出失败')
+  }
+}
 </script>
 
 <style scoped>
@@ -76,6 +134,20 @@ const menuItems = [
 .login-btn {
   min-width: 80px;
 }
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.el-dropdown-link {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.username {
+  margin-left: 8px;
+  font-weight: bold;
+}
 </style>
-
-

@@ -49,7 +49,35 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseLong = {
+    code?: number
+    data?: number
+    message?: string
+  }
+
+  type BaseResponsePageUser = {
+    code?: number
+    data?: PageUser
+    message?: string
+  }
+
+  type BaseResponseUserLoginVO = {
+    code?: number
+    data?: UserLoginVO
+    message?: string
+  }
+
+  type BaseResponseUserVO = {
+    code?: number
+    data?: UserVO
+    message?: string
+  }
+
   type deleteQuestionParams = {
+    id: number
+  }
+
+  type deleteUserParams = {
     id: number
   }
 
@@ -58,10 +86,23 @@ declare namespace API {
     userAnswers?: string[]
   }
 
+  type getUserByIdParams = {
+    id: number
+  }
+
   type OptionDTO = {
     key?: string
     value?: string
     dimension?: string
+  }
+
+  type PageUser = {
+    records?: User[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
   }
 
   type queryQuestionParams = {
@@ -76,5 +117,79 @@ declare namespace API {
     options?: string
     sortOrder?: number
     status?: number
+  }
+
+  type User = {
+    id?: number
+    userAccount?: string
+    userPassword?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+    editTime?: string
+    createAt?: string
+    updateAt?: string
+    isDeleted?: number
+  }
+
+  type UserAddRequest = {
+    userAccount?: string
+    userPassword?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+  }
+
+  type UserLoginRequest = {
+    userAccount?: string
+    userPassword?: string
+  }
+
+  type UserLoginVO = {
+    id?: number
+    token?: string
+    userAccount?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+  }
+
+  type UserQueryRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    id?: number
+    userAccount?: string
+    userName?: string
+    userRole?: string
+  }
+
+  type UserRegisterRequest = {
+    userAccount?: string
+    userPassword?: string
+    checkPassword?: string
+  }
+
+  type UserUpdateRequest = {
+    id?: number
+    userAccount?: string
+    userPassword?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
+  }
+
+  type UserVO = {
+    id?: number
+    userAccount?: string
+    userName?: string
+    userAvatar?: string
+    userProfile?: string
+    userRole?: string
   }
 }
