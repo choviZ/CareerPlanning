@@ -43,6 +43,12 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseCareer = {
+    code?: number
+    data?: Career
+    message?: string
+  }
+
   type BaseResponseListAssessmentQuestionVo = {
     code?: number
     data?: AssessmentQuestionVo[]
@@ -52,6 +58,12 @@ declare namespace API {
   type BaseResponseLong = {
     code?: number
     data?: number
+    message?: string
+  }
+
+  type BaseResponsePageCareer = {
+    code?: number
+    data?: PageCareer
     message?: string
   }
 
@@ -73,6 +85,51 @@ declare namespace API {
     message?: string
   }
 
+  type Career = {
+    id?: number
+    name?: string
+    description?: string
+    requiredSkills?: string
+    jobOutlook?: string
+    averageSalary?: string
+    createdAt?: string
+    updatedAt?: string
+    isDeleted?: boolean
+  }
+
+  type CareerAddRequest = {
+    name?: string
+    description?: string
+    requiredSkills?: string
+    jobOutlook?: string
+    averageSalary?: string
+  }
+
+  type CareerQueryRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    name?: string
+    description?: string
+    requiredSkills?: string
+    jobOutlook?: string
+    averageSalary?: string
+  }
+
+  type CareerUpdateRequest = {
+    id?: number
+    name?: string
+    description?: string
+    requiredSkills?: string
+    jobOutlook?: string
+    averageSalary?: string
+  }
+
+  type deleteCareerParams = {
+    id: number
+  }
+
   type deleteQuestionParams = {
     id: number
   }
@@ -86,6 +143,10 @@ declare namespace API {
     userAnswers?: string[]
   }
 
+  type getCareerByIdParams = {
+    id: number
+  }
+
   type getUserByIdParams = {
     id: number
   }
@@ -94,6 +155,15 @@ declare namespace API {
     key?: string
     value?: string
     dimension?: string
+  }
+
+  type PageCareer = {
+    records?: Career[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
   }
 
   type PageUser = {

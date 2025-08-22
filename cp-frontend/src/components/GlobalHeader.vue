@@ -60,7 +60,8 @@ onMounted(() => {
 
 const menuItems = [
   { path: '/', label: '首页' },
-  { path: '/assessment', label: '职业测评' }
+  { path: '/assessment', label: '职业测评' },
+  { path: '/management/career', label: '职业管理' },
 ]
 
 const toLoginPage = () => {
