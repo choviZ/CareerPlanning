@@ -41,13 +41,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotLoginException.class)
-    public BaseResponse<?> NotLoginHandler(MethodArgumentNotValidException e) {
-        log.error("not login");
+    public BaseResponse<?> NotLoginHandler(NotLoginException e) {
+        log.error("未登录");
         return ResultUtils.error(ErrorCode.NOT_LOGIN_ERROR, "请先登录");
     }
+
     @ExceptionHandler(NotRoleException.class)
-    public BaseResponse<?> NotRoleHandler(MethodArgumentNotValidException e) {
-        log.error("no access");
-        return ResultUtils.error(ErrorCode.NO_AUTH_ERROR);
+    public BaseResponse<?> NotRoleHandler(NotRoleException e) {
+        log.error("无权限");
+        return ResultUtils.error(ErrorCode.NO_AUTH_ERROR,"没有权限");
     }
 }

@@ -19,14 +19,14 @@ knife4j:
     language: zh_cn
 
 
-# Sa-Token配置
+# Sa-Token
 sa-token:
   token-name: satoken
   timeout: 86400 # 7days
   active-timeout: -1
   is-concurrent: true # concurrent login
   is-share: true
-#  token-template: org.springframework.data.redis.core.RedisTemplate # Token的持久层框架，Redis
+  #  token-template: org.springframework.data.redis.core.RedisTemplate # Redis
   log-display: true
 
 

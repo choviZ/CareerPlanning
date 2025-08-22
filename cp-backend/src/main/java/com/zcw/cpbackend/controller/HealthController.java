@@ -10,6 +10,6 @@ public class HealthController {
 
     @GetMapping("/")
     public String healthCheck() {
-        return "ok";
+        throw new RuntimeException("测试异常");
     }
 }
