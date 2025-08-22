@@ -2,9 +2,9 @@ package com.zcw.cpbackend.controller;
 
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
-import com.zcw.cpbackend.model.dto.AddQuestionRequest;
-import com.zcw.cpbackend.model.dto.DoAssessmentRequest;
-import com.zcw.cpbackend.model.dto.UpdateQuestionRequest;
+import com.zcw.cpbackend.model.dto.assessment.AddQuestionRequest;
+import com.zcw.cpbackend.model.dto.assessment.DoAssessmentRequest;
+import com.zcw.cpbackend.model.dto.assessment.UpdateQuestionRequest;
 import com.zcw.cpbackend.model.vo.AssessmentQuestionVo;
 import com.zcw.cpbackend.model.vo.AssessmentResultVo;
 import com.zcw.cpbackend.service.AssessmentQuestionService;

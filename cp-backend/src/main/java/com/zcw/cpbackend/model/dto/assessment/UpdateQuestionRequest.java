@@ -1,4 +1,4 @@
-package com.zcw.cpbackend.model.dto;
+package com.zcw.cpbackend.model.dto.assessment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

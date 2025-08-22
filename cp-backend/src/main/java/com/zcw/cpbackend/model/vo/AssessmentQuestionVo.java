@@ -4,7 +4,7 @@ package com.zcw.cpbackend.model.vo;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import com.zcw.cpbackend.model.dto.OptionDTO;
+import com.zcw.cpbackend.model.dto.assessment.OptionDTO;
 import com.zcw.cpbackend.model.entity.AssessmentQuestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

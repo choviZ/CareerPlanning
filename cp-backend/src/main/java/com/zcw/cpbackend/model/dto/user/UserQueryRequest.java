@@ -1,4 +1,4 @@
-package com.zcw.cpbackend.model.dto;
+package com.zcw.cpbackend.model.dto.user;
 
 import com.zcw.cpbackend.common.PageRequest;
 import java.io.Serializable;

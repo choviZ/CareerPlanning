@@ -1,15 +1,20 @@
-package com.zcw.cpbackend.model.dto;
+package com.zcw.cpbackend.model.dto.user;
 
 import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 添加用户请求
+ * 更新用户请求
  */
 @Data
-public class UserAddRequest implements Serializable {
+public class UserUpdateRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * id
+     */
+    private Long id;
 
     /**
      * 用户账号

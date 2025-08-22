@@ -2,11 +2,11 @@ package com.zcw.cpbackend.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
-import com.zcw.cpbackend.model.dto.UserAddRequest;
-import com.zcw.cpbackend.model.dto.UserLoginRequest;
-import com.zcw.cpbackend.model.dto.UserQueryRequest;
-import com.zcw.cpbackend.model.dto.UserRegisterRequest;
-import com.zcw.cpbackend.model.dto.UserUpdateRequest;
+import com.zcw.cpbackend.model.dto.user.UserAddRequest;
+import com.zcw.cpbackend.model.dto.user.UserLoginRequest;
+import com.zcw.cpbackend.model.dto.user.UserQueryRequest;
+import com.zcw.cpbackend.model.dto.user.UserRegisterRequest;
+import com.zcw.cpbackend.model.dto.user.UserUpdateRequest;
 import com.zcw.cpbackend.model.entity.User;
 import com.zcw.cpbackend.model.vo.UserLoginVO;
 import com.zcw.cpbackend.model.vo.UserVO;

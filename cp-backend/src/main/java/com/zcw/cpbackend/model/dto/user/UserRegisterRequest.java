@@ -1,13 +1,13 @@
-package com.zcw.cpbackend.model.dto;
+package com.zcw.cpbackend.model.dto.user;
 
 import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 用户登录请求
+ * 用户注册请求
  */
 @Data
-public class UserLoginRequest implements Serializable {
+public class UserRegisterRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,4 +20,9 @@ public class UserLoginRequest implements Serializable {
      * 用户密码
      */
     private String userPassword;
+
+    /**
+     * 再次确认密码
+     */
+    private String checkPassword;
 }
