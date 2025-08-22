@@ -1,9 +1,11 @@
 package com.zcw.cpbackend.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.mybatisflex.core.paginate.Page;
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
+import com.zcw.cpbackend.constance.UserRoleConstance;
 import com.zcw.cpbackend.model.dto.user.UserAddRequest;
 import com.zcw.cpbackend.model.dto.user.UserLoginRequest;
 import com.zcw.cpbackend.model.dto.user.UserQueryRequest;
@@ -86,6 +88,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/add")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> addUser(@RequestBody UserAddRequest userAddRequest) {
         boolean result = userService.addUser(userAddRequest);
         return ResultUtils.success(result);
@@ -98,6 +101,7 @@ public class UserController {
      * @return
      */
     @GetMapping("/delete/{id}")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> deleteUser(@PathVariable Long id) {
         boolean result = userService.deleteUser(id);
         return ResultUtils.success(result);
@@ -122,6 +126,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/list/page")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Page<User>> listUserByPage(@RequestBody UserQueryRequest userQueryRequest) {
         Page<User> userPage = userService.queryUser(userQueryRequest);
         return ResultUtils.success(userPage);

@@ -1,11 +1,14 @@
 package com.zcw.cpbackend.controller;
 
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.mybatisflex.core.paginate.Page;
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
+import com.zcw.cpbackend.constance.UserRoleConstance;
 import com.zcw.cpbackend.model.dto.career.CareerAddRequest;
 import com.zcw.cpbackend.model.dto.career.CareerQueryRequest;
 import com.zcw.cpbackend.model.dto.career.CareerUpdateRequest;
+import com.zcw.cpbackend.model.enums.UserRoleEnum;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +38,7 @@ public class CareerController {
      * @return 是否成功
      */
     @PostMapping("/add")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> addCareer(@RequestBody CareerAddRequest careerAddRequest) {
         boolean result = careerService.addCareer(careerAddRequest);
         return ResultUtils.success(result);
@@ -47,6 +51,7 @@ public class CareerController {
      * @return 是否成功
      */
     @GetMapping("/delete/{id}")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> deleteCareer(@PathVariable Long id) {
         boolean result = careerService.deleteCareer(id);
         return ResultUtils.success(result);
@@ -59,6 +64,7 @@ public class CareerController {
      * @return 是否成功
      */
     @PostMapping("/update")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> updateCareer(@RequestBody CareerUpdateRequest careerUpdateRequest) {
         boolean result = careerService.updateCareer(careerUpdateRequest);
         return ResultUtils.success(result);

@@ -2,6 +2,7 @@ package com.zcw.cpbackend.exception;
 
 
 import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotRoleException;
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -43,5 +44,10 @@ public class GlobalExceptionHandler {
     public BaseResponse<?> NotLoginHandler(MethodArgumentNotValidException e) {
         log.error("not login");
         return ResultUtils.error(ErrorCode.NOT_LOGIN_ERROR, "请先登录");
+    }
+    @ExceptionHandler(NotRoleException.class)
+    public BaseResponse<?> NotRoleHandler(MethodArgumentNotValidException e) {
+        log.error("no access");
+        return ResultUtils.error(ErrorCode.NO_AUTH_ERROR);
     }
 }

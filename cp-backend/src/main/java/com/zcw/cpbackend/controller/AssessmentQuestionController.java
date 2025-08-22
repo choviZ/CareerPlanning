@@ -1,7 +1,10 @@
 package com.zcw.cpbackend.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
+import com.zcw.cpbackend.constance.UserRoleConstance;
 import com.zcw.cpbackend.model.dto.assessment.AddQuestionRequest;
 import com.zcw.cpbackend.model.dto.assessment.DoAssessmentRequest;
 import com.zcw.cpbackend.model.dto.assessment.UpdateQuestionRequest;
@@ -28,6 +31,7 @@ public class AssessmentQuestionController {
     private AssessmentQuestionService assessmentQuestionService;
 
     @PostMapping("/do")
+    @SaCheckLogin
     public BaseResponse<AssessmentResultVo> doAssessment(@RequestBody DoAssessmentRequest request) {
         AssessmentResultVo result = assessmentQuestionService.doAssessment(request.getUserAnswers(), request.getTestType());
         return ResultUtils.success(result);
@@ -38,6 +42,7 @@ public class AssessmentQuestionController {
      * 添加题目
      */
     @PostMapping("/addQuestion")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> addQuestion(@RequestBody AddQuestionRequest request) {
         return ResultUtils.success(assessmentQuestionService.addQuestion(request));
     }
@@ -46,6 +51,7 @@ public class AssessmentQuestionController {
      * 删除题目
      */
     @GetMapping("/del/{id}")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> deleteQuestion(@PathVariable Long id) {
         return ResultUtils.success(assessmentQuestionService.deleteQuestion(id));
     }
@@ -54,6 +60,7 @@ public class AssessmentQuestionController {
      * 修改题目
      */
     @PostMapping("/updateQuestion")
+    @SaCheckRole(UserRoleConstance.ADMIN)
     public BaseResponse<Boolean> updateQuestion(@RequestBody UpdateQuestionRequest updateQuestionRequest) {
         boolean result = assessmentQuestionService.updateQuestion(updateQuestionRequest);
         return ResultUtils.success(result);
