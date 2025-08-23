@@ -1,5 +1,6 @@
 package com.zcw.cpbackend.service.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -7,16 +8,16 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import com.zcw.cpbackend.exception.BusinessException;
 import com.zcw.cpbackend.exception.ErrorCode;
 import com.zcw.cpbackend.exception.ThrowUtils;
+import com.zcw.cpbackend.service.AssessmentResultService;
 import com.zcw.cpbackend.model.dto.assessment.AddQuestionRequest;
 import com.zcw.cpbackend.model.dto.assessment.OptionDTO;
 import com.zcw.cpbackend.model.dto.assessment.UpdateQuestionRequest;
-import com.zcw.cpbackend.model.entity.AssessmentQuestion;
+import com.zcw.cpbackend.model.entity.*;
 import com.zcw.cpbackend.mapper.AssessmentQuestionMapper;
 import com.zcw.cpbackend.model.enums.TestTypeEnum;
 import com.zcw.cpbackend.model.vo.AssessmentQuestionVo;
-import com.zcw.cpbackend.model.vo.AssessmentResultVo;
-import com.zcw.cpbackend.service.AssessmentQuestionService;
-import com.zcw.cpbackend.service.AssessmentResultService;
+import com.zcw.cpbackend.model.vo.UserAssessmentVo;
+import com.zcw.cpbackend.service.*;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -39,9 +39,14 @@ public class AssessmentQuestionServiceImpl extends ServiceImpl<AssessmentQuestio
 
     @Resource
     private AssessmentResultService assessmentResultService;
+    @Resource
+    private ResultCareerMappingService resultCareerMappingService;
+    @Resource
+    private UserAssessmentService userAssessmentService;
 
     @Override
-    public AssessmentResultVo doAssessment(List<String> userAnswers, String testType) {
+    public UserAssessmentVo doAssessment(List<String> userAnswers, String testType) {
+        // 校验
         TestTypeEnum testTypeEnum = TestTypeEnum.getEnumByValue(testType);
         ThrowUtils.throwIf(testTypeEnum == null, ErrorCode.PARAMS_ERROR, "测评类型错误");
         // 评估-mbti
@@ -68,36 +73,48 @@ public class AssessmentQuestionServiceImpl extends ServiceImpl<AssessmentQuestio
         }
         // 3. 计算结果
         String dimensionScores = JSONUtil.toJsonStr(map);
-        String result = calculateResult(map);
+        String result = calculateMBTI(map);
+        // 查询结果表
+        QueryWrapper queryWrapper = assessmentResultService.query().eq(AssessmentResult::getResultCode, result);
+        AssessmentResult assessmentResult = assessmentResultService.getOne(queryWrapper);
+        // 查询结果关联的职业
+        // TODO 暂时只查询匹配度最高的一条记录
+        ResultCareerMapping resultCareerMapping = resultCareerMappingService.queryBastCompatibleCareer(testType, assessmentResult.getResultCode());
+        ThrowUtils.throwIf(resultCareerMapping == null, ErrorCode.NOT_FOUND_ERROR,"该评估结果没有对应的职业");
         // 4. 保存答题记录
-        AssessmentResultVo resultVo = AssessmentResultVo.builder()
-                // TODO userId
-                .userId(1L)
+        UserAssessment userAssessment = UserAssessment.builder()
                 .testType(testType)
-                .resultCode(result)
-                .dimensionScores(dimensionScores)
+                .resultCode(assessmentResult.getResultCode())
+                .resultName(assessmentResult.getResultName())
+                .resultDesc(assessmentResult.getResultDesc())
+                .userId(StpUtil.getLoginIdAsLong())
+                .choices(JSONUtil.toJsonStr(userAnswers))
+                .careerId(resultCareerMapping.getCareerId())
+                .careerName(resultCareerMapping.getCareerName())
+                .careerDescription(resultCareerMapping.getDescription())
+                .dimensionScores(JSONUtil.toJsonStr(dimensionScores))
                 .createdAt(LocalDateTime.now())
                 .build();
-        boolean saved = assessmentResultService.save(AssessmentResultVo.voToObj(resultVo));
-        ThrowUtils.throwIf(!saved, ErrorCode.OPERATION_ERROR, "保存测评记录失败");
-        return resultVo;
+        boolean saved = userAssessmentService.save(userAssessment);
+        ThrowUtils.throwIf(!saved, ErrorCode.OPERATION_ERROR,"评估记录保存失败");
+        return UserAssessmentVo.objToVo(userAssessment);
     }
 
-    private String calculateResult(Map<String, Integer> map) {
-        // 按维度数量降序排序
-        List<Map.Entry<String, Integer>> sortedDimensions = map.entrySet().stream()
-                .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-                .toList();
-        // 检查是否有足够的维度
-        if (sortedDimensions.size() < 4) {
-            throw new IllegalArgumentException("维度数量不足，无法生成MBTI类型");
-        }
-        // 取数量最高的4个维度拼接结果
-        StringBuilder mbtiResult = new StringBuilder();
-        for (int i = 0; i < 4; i++) {
-            mbtiResult.append(sortedDimensions.get(i).getKey());
-        }
-        return mbtiResult.toString();
+    /**
+     * 计算MBTI结果
+     * @param map
+     * @return
+     */
+    public String calculateMBTI(HashMap<String, Integer> map) {
+        // 能量获取维度：E - 外向，I - 内向
+        String ei = map.get("E") > map.get("I") ? "E" : "I";
+        // 信息收集维度：S - 实感，N - 直觉
+        String sn = map.get("S") > map.get("N") ? "S" : "N";
+        // 决策方式维度：T - 思考，F - 情感
+        String tf = map.get("T") > map.get("F") ? "T" : "F";
+        // 生活方式维度：J - 判断，P - 知觉
+        String jp = map.get("J") > map.get("P") ? "J" : "P";
+        return ei + sn + tf + jp;
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.util.Map;
 public class MybatisFlexGenerator {
 
     private final static String[] TABLE_NAMES = new String[]{
-            "career",
+            "assessment_result",
     };
 
     public static void main(String[] args) {

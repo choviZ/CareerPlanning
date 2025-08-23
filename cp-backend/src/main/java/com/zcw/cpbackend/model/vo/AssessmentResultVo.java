@@ -1,7 +1,5 @@
 package com.zcw.cpbackend.model.vo;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.zcw.cpbackend.model.entity.AssessmentResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +10,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 测评结果表 实体类。
+ * 测评结果Vo。
  *
  * @author zcw
  */
@@ -31,11 +29,6 @@ public class AssessmentResultVo implements Serializable {
     private Long id;
 
     /**
-     * 用户ID
-     */
-    private Long userId;
-
-    /**
      * 测评类型
      */
     private String testType;
@@ -46,48 +39,28 @@ public class AssessmentResultVo implements Serializable {
     private String resultCode;
 
     /**
-     * 各维度得分详情
+     * 测评结果名称
      */
-    private String dimensionScores;
+    private String resultName;
 
     /**
-     * 完成时间
+     * 测评结果描述
+     */
+    private String resultDesc;
+
+    /**
+     * 创建时间
      */
     private LocalDateTime createdAt;
 
     /**
-     * 是否删除
+     * 更新时间
      */
-    private int isDeleted;
-
-
-    /**
-     * 对象转包装类
-     *
-     * @param obj 原始对象
-     * @return 包装类
-     */
-    public static AssessmentResultVo objToVo(AssessmentResult obj) {
-        if (obj == null) {
-            return null;
-        }
-        AssessmentResultVo assessmentResultVo = new AssessmentResultVo();
-        BeanUtil.copyProperties(obj, assessmentResultVo);
-        return assessmentResultVo;
-    }
+    private LocalDateTime updatedAt;
 
     /**
-     * 包装类转对象
-     *
-     * @param vo 包装类
-     * @return 对象
+     * 是否删除（0-否，1-是）
      */
-    public static AssessmentResult voToObj(AssessmentResultVo vo) {
-        if (vo == null) {
-            return null;
-        }
-        AssessmentResult assessmentResult = new AssessmentResult();
-        BeanUtil.copyProperties(vo, assessmentResult);
-        return assessmentResult;
-    }
+    private Integer isDeleted;
+
 }

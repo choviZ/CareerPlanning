@@ -8,14 +8,16 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import java.io.Serial;
+import java.util.List;
 
+import com.mybatisflex.core.keygen.KeyGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 测评结果表 实体类。
+ * 用户评估记录表 实体类。
  *
  * @author zcw
  */
@@ -23,8 +25,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("assessment_result")
-public class AssessmentResult implements Serializable {
+@Table("user_assessment")
+public class UserAssessment implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -32,16 +34,16 @@ public class AssessmentResult implements Serializable {
     /**
      * 主键ID
      */
-    @Id(keyType = KeyType.Auto)
+    @Id(keyType = KeyType.Generator,value = KeyGenerators.snowFlakeId)
     private Long id;
 
     /**
-     * 测评类型
+     * 评估类型
      */
     private String testType;
 
     /**
-     * 结果代码（如INTJ、RIA等）
+     * 结果代码
      */
     private String resultCode;
 
@@ -56,19 +58,49 @@ public class AssessmentResult implements Serializable {
     private String resultDesc;
 
     /**
+     * 图标
+     */
+    private String resultIcon;
+
+    /**
+     * 用户选择的选项列表
+     */
+    private String choices;
+
+    /**
+     * 各维度的得分-Json
+     */
+    private String dimensionScores;
+
+    /**
+     * 用户ID
+     */
+    private Long userId;
+
+    /**
+     * 职业ID
+     */
+    private Long careerId;
+
+    /**
+     * 职业名称
+     */
+    private String careerName;
+
+    /**
+     * 职业描述
+     */
+    private String careerDescription;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createdAt;
 
     /**
-     * 更新时间
-     */
-    private LocalDateTime updatedAt;
-
-    /**
-     * 是否删除（0-否，1-是）
+     * 是否删除
      */
     @Column(isLogicDelete = true)
-    private Integer isDeleted;
+    private int isDeleted;
 
 }

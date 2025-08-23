@@ -4,6 +4,7 @@ import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -15,7 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 测评结果表 实体类。
+ * 测评结果职业关联表 实体类。
  *
  * @author zcw
  */
@@ -23,8 +24,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("assessment_result")
-public class AssessmentResult implements Serializable {
+@Table("result_career_mapping")
+public class ResultCareerMapping implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -36,24 +37,39 @@ public class AssessmentResult implements Serializable {
     private Long id;
 
     /**
+     * 测评结果ID
+     */
+    private Long resultId;
+
+    /**
      * 测评类型
      */
     private String testType;
 
     /**
-     * 结果代码（如INTJ、RIA等）
+     * 测评结果代码
      */
     private String resultCode;
 
     /**
-     * 测评结果名称
+     * 职业ID
      */
-    private String resultName;
+    private Long careerId;
 
     /**
-     * 测评结果描述
+     * 职业名称
      */
-    private String resultDesc;
+    private String careerName;
+
+    /**
+     * 职业描述
+     */
+    private String description;
+
+    /**
+     * 兼容性评分（0-100）
+     */
+    private Integer compatibilityScore;
 
     /**
      * 创建时间
@@ -61,14 +77,8 @@ public class AssessmentResult implements Serializable {
     private LocalDateTime createdAt;
 
     /**
-     * 更新时间
-     */
-    private LocalDateTime updatedAt;
-
-    /**
-     * 是否删除（0-否，1-是）
+     * 是否删除
      */
     @Column(isLogicDelete = true)
-    private Integer isDeleted;
-
+    private int isDeleted;
 }

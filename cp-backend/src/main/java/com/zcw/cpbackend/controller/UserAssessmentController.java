@@ -1,20 +1,20 @@
 package com.zcw.cpbackend.controller;
 
-import com.zcw.cpbackend.service.AssessmentResultService;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.zcw.cpbackend.service.UserAssessmentService;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 测评结果表 控制层。
+ * 用户评估记录表 控制层。
  *
  * @author zcw
  */
 @RestController
-@RequestMapping("/assessmentResult")
-public class AssessmentResultController {
+@RequestMapping("/userAssessment")
+public class UserAssessmentController {
 
     @Resource
-    private AssessmentResultService assessmentResultService;
+    private UserAssessmentService userAssessmentService;
 
 }

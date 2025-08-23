@@ -5,7 +5,7 @@ import com.zcw.cpbackend.model.dto.assessment.AddQuestionRequest;
 import com.zcw.cpbackend.model.dto.assessment.UpdateQuestionRequest;
 import com.zcw.cpbackend.model.entity.AssessmentQuestion;
 import com.zcw.cpbackend.model.vo.AssessmentQuestionVo;
-import com.zcw.cpbackend.model.vo.AssessmentResultVo;
+import com.zcw.cpbackend.model.vo.UserAssessmentVo;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface AssessmentQuestionService extends IService<AssessmentQuestion> 
      * @param testType 测评类型
      * @return 测评结果
      */
-    AssessmentResultVo doAssessment(List<String> userAnswers, String testType);
+    UserAssessmentVo doAssessment(List<String> userAnswers, String testType);
 
     /**
      * 添加题目

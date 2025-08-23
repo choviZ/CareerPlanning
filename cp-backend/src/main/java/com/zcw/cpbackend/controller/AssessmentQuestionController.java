@@ -10,6 +10,7 @@ import com.zcw.cpbackend.model.dto.assessment.DoAssessmentRequest;
 import com.zcw.cpbackend.model.dto.assessment.UpdateQuestionRequest;
 import com.zcw.cpbackend.model.vo.AssessmentQuestionVo;
 import com.zcw.cpbackend.model.vo.AssessmentResultVo;
+import com.zcw.cpbackend.model.vo.UserAssessmentVo;
 import com.zcw.cpbackend.service.AssessmentQuestionService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,8 @@ public class AssessmentQuestionController {
 
     @PostMapping("/do")
     @SaCheckLogin
-    public BaseResponse<AssessmentResultVo> doAssessment(@RequestBody DoAssessmentRequest request) {
-        AssessmentResultVo result = assessmentQuestionService.doAssessment(request.getUserAnswers(), request.getTestType());
+    public BaseResponse<UserAssessmentVo> doAssessment(@RequestBody DoAssessmentRequest request) {
+        UserAssessmentVo result = assessmentQuestionService.doAssessment(request.getUserAnswers(), request.getTestType());
         return ResultUtils.success(result);
     }
 
