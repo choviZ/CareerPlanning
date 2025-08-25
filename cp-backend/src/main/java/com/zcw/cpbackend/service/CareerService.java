@@ -6,6 +6,7 @@ import com.zcw.cpbackend.model.dto.career.CareerAddRequest;
 import com.zcw.cpbackend.model.dto.career.CareerQueryRequest;
 import com.zcw.cpbackend.model.dto.career.CareerUpdateRequest;
 import com.zcw.cpbackend.model.entity.Career;
+import com.zcw.cpbackend.model.vo.CareerVo;
 
 /**
  * 职业表 服务层。
@@ -44,7 +45,7 @@ public interface CareerService extends IService<Career> {
      * @param careerQueryRequest 查询条件
      * @return 职业分页
      */
-    Page<Career> queryCareer(CareerQueryRequest careerQueryRequest);
+    Page<CareerVo> queryCareer(CareerQueryRequest careerQueryRequest);
 
     /**
      * 根据id查询职业
@@ -52,5 +53,5 @@ public interface CareerService extends IService<Career> {
      * @param id 职业id
      * @return 职业信息
      */
-    Career queryCareerById(Long id);
+    CareerVo queryCareerById(Long id);
 }

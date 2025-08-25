@@ -10,11 +10,14 @@ import com.zcw.cpbackend.model.dto.career.CareerQueryRequest;
 import com.zcw.cpbackend.model.dto.career.CareerUpdateRequest;
 import com.zcw.cpbackend.model.entity.Career;
 import com.zcw.cpbackend.mapper.CareerMapper;
+import com.zcw.cpbackend.model.vo.CareerVo;
 import com.zcw.cpbackend.service.CareerService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 职业表 服务层实现。
@@ -93,7 +96,7 @@ public class CareerServiceImpl extends ServiceImpl<CareerMapper, Career>  implem
     }
 
     @Override
-    public Page<Career> queryCareer(CareerQueryRequest careerQueryRequest) {
+    public Page<CareerVo> queryCareer(CareerQueryRequest careerQueryRequest) {
         if (careerQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -131,15 +134,32 @@ public class CareerServiceImpl extends ServiceImpl<CareerMapper, Career>  implem
         // 分页查询
         long current = careerQueryRequest.getCurrent();
         long pageSize = careerQueryRequest.getPageSize();
-        return page(new Page<>(current, pageSize), queryWrapper);
+        Page<Career> careerPage = page(new Page<>(current, pageSize), queryWrapper);
+        // 转换为 CareerVo
+        Page<CareerVo> careerVoPage = new Page<>(careerPage.getPageNumber(), careerPage.getPageSize(), careerPage.getTotalRow());
+        List<CareerVo> careerVos = careerPage.getRecords().stream().map(career -> {
+            CareerVo careerVo = new CareerVo();
+            careerVo.setId(career.getId());
+            careerVo.setName(career.getName());
+            careerVo.setDescription(career.getDescription());
+            careerVo.setRequiredSkills(career.getRequiredSkills());
+            careerVo.setJobOutlook(career.getJobOutlook());
+            careerVo.setAverageSalary(career.getAverageSalary());
+            careerVo.setCreatedAt(career.getCreatedAt());
+            careerVo.setUpdatedAt(career.getUpdatedAt());
+            return careerVo;
+        }).collect(Collectors.toList());
+
+        careerVoPage.setRecords(careerVos);
+        return careerVoPage;
     }
 
     @Override
-    public Career queryCareerById(Long id) {
+    public CareerVo queryCareerById(Long id) {
         if (id == null || id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         
-        return getById(id);
+        return CareerVo.objToVo(getById(id));
     }
 }

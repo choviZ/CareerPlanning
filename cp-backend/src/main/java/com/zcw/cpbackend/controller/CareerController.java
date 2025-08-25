@@ -8,10 +8,9 @@ import com.zcw.cpbackend.constance.UserRoleConstance;
 import com.zcw.cpbackend.model.dto.career.CareerAddRequest;
 import com.zcw.cpbackend.model.dto.career.CareerQueryRequest;
 import com.zcw.cpbackend.model.dto.career.CareerUpdateRequest;
-import com.zcw.cpbackend.model.enums.UserRoleEnum;
+import com.zcw.cpbackend.model.vo.CareerVo;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.zcw.cpbackend.model.entity.Career;
 import com.zcw.cpbackend.service.CareerService;
 
 /**
@@ -23,7 +22,7 @@ import com.zcw.cpbackend.service.CareerService;
 @RequestMapping("/career")
 public class CareerController {
 
-    @Autowired
+    @Resource
     private CareerService careerService;
 
     /**
@@ -72,8 +71,8 @@ public class CareerController {
      * @return 职业分页
      */
     @PostMapping("/list/page")
-    public BaseResponse<Page<Career>> listCareerByPage(@RequestBody CareerQueryRequest careerQueryRequest) {
-        Page<Career> careerPage = careerService.queryCareer(careerQueryRequest);
+    public BaseResponse<Page<CareerVo>> listCareerByPage(@RequestBody CareerQueryRequest careerQueryRequest) {
+        Page<CareerVo> careerPage = careerService.queryCareer(careerQueryRequest);
         return ResultUtils.success(careerPage);
     }
 
@@ -84,8 +83,8 @@ public class CareerController {
      * @return 职业信息
      */
     @GetMapping("/get/{id}")
-    public BaseResponse<Career> getCareerById(@PathVariable Long id) {
-        Career career = careerService.queryCareerById(id);
+    public BaseResponse<CareerVo> getCareerById(@PathVariable Long id) {
+        CareerVo career = careerService.queryCareerById(id);
         return ResultUtils.success(career);
     }
 }

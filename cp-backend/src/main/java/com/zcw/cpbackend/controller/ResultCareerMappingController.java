@@ -1,5 +1,7 @@
 package com.zcw.cpbackend.controller;
 
+import com.zcw.cpbackend.common.BaseResponse;
+import com.zcw.cpbackend.model.vo.ResultCareerMappingVo;
 import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.zcw.cpbackend.service.ResultCareerMappingService;
@@ -11,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
  * @author zcw
  */
 @RestController
-@RequestMapping("/resultCareerMapping")
+@RequestMapping("/result-career")
 public class ResultCareerMappingController {
 
     @Resource
     private ResultCareerMappingService resultCareerMappingService;
 
+    
 
 }
