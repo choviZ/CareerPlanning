@@ -1,5 +1,7 @@
 package com.zcw.cpbackend.model.vo;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.zcw.cpbackend.model.entity.AssessmentResult;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -62,5 +64,20 @@ public class AssessmentResultVo implements Serializable {
      * 是否删除（0-否，1-是）
      */
     private Integer isDeleted;
+
+    /**
+     * 对象转包装类
+     *
+     * @param assessmentResult 原始对象
+     * @return 包装类
+     */
+    public static AssessmentResultVo objToVo(AssessmentResult assessmentResult) {
+        if (assessmentResult == null) {
+            return null;
+        }
+        AssessmentResultVo assessmentResultVo = new AssessmentResultVo();
+        BeanUtil.copyProperties(assessmentResult, assessmentResultVo);
+        return assessmentResultVo;
+    }
 
 }

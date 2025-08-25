@@ -126,7 +126,7 @@ public class AssessmentQuestionServiceImpl extends ServiceImpl<AssessmentQuestio
                 .testType(request.getTestType())
                 .content(request.getContent())
                 .dimension(request.getDimension())
-                .options(request.getOptions())
+                .options(JSONUtil.toJsonStr(request.getOptions()))
                 .sortOrder(request.getSortOrder())
                 .status(request.getStatus())
                 .createdAt(LocalDateTime.now())

@@ -26,7 +26,7 @@ public class AddQuestionRequest implements Serializable {
     private Long id;
 
     /**
-     * 测评类型
+     * 评估类型
      */
     private String testType;
 
@@ -41,17 +41,17 @@ public class AddQuestionRequest implements Serializable {
     private String dimension;
 
     /**
+     * 状态：0-禁用，1-启用
+     */
+    private Integer status;
+
+    /**
      * 选项数组，包含内容和分数规则
      */
-    private String options;
+    private OptionDTO options;
 
     /**
      * 题目排序序号
      */
     private Integer sortOrder;
-
-    /**
-     * 状态：1-启用，0-禁用
-     */
-    private Integer status;
 }

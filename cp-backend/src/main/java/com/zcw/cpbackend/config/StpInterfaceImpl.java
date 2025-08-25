@@ -1,6 +1,8 @@
 package com.zcw.cpbackend.config;
 
 import cn.dev33.satoken.stp.StpInterface;
+import com.zcw.cpbackend.constance.UserRoleConstance;
+import com.zcw.cpbackend.controller.UserController;
 import com.zcw.cpbackend.exception.ErrorCode;
 import com.zcw.cpbackend.exception.ThrowUtils;
 import com.zcw.cpbackend.model.entity.User;
@@ -35,6 +37,9 @@ public class StpInterfaceImpl implements StpInterface {
         ThrowUtils.throwIf(user == null, ErrorCode.NOT_FOUND_ERROR, "用户不存在");
         List<String> list = new ArrayList<String>();
         list.add(user.getUserRole());
+        if (user.getUserRole().equals("admin")){
+            list.add(UserRoleConstance.USER);
+        }
         return list;
     }
 
