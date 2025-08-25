@@ -33,6 +33,11 @@ const router = createRouter({
       path: '/management/career',
       name: 'CareerManagement',
       component: () => import('@/views/management/CareerManagement.vue')
+    },
+    {
+      path: '/management/result-career-mapping',
+      name: 'ResultCareerMappingManagement',
+      component: () => import('@/views/management/ResultCareerMappingManagement.vue')
     }
   ]
 })

@@ -86,7 +86,7 @@ const searchParams = ref({
 })
 
 // 表格数据
-const tableData = ref<API.Career[]>([])
+const tableData = ref<API.CareerVo[]>([])
 const loading = ref(false)
 
 // 分页

@@ -62,6 +62,7 @@ const menuItems = [
   { path: '/', label: '首页' },
   { path: '/assessment', label: '职业测评' },
   { path: '/management/career', label: '职业管理' },
+  { path: '/management/result-career-mapping', label: '测评结果映射' }
 ]
 
 const toLoginPage = () => {
@@ -83,7 +84,7 @@ const doLayout = async () => {
     ElMessage.success('退出成功')
     userStore.clearLoginState()
     await router.push('/')
-  }else {
+  } else {
     ElMessage.error(res.data.message || '退出失败')
   }
 }

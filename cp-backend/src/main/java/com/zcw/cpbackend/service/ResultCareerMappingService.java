@@ -40,8 +40,8 @@ public interface ResultCareerMappingService extends IService<ResultCareerMapping
 
     /**
      * 根据测评结果查询结果职业关联表
-     * @param testType 评估类型
-     * @param resultCode 评估结果
+     * @param testType 评估类型，可为null，表示查询所有类型
+     * @param resultCode 评估结果，可为null，表示查询所有结果
      * @param pageNum 页码
      * @param pageSize 每页数量
      * @return 结果职业关联表
@@ -50,8 +50,8 @@ public interface ResultCareerMappingService extends IService<ResultCareerMapping
 
     /**
      * 查询最匹配的结果职业映射
-     * @param testType 评估类型
-     * @param resultCode 评估结果
+     * @param testType 评估类型，可为null，表示查询所有类型
+     * @param resultCode 评估结果，可为null，表示查询所有结果
      * @return 最匹配的结果职业映射
      */
     ResultCareerMapping queryBastCompatibleCareer(String testType, String resultCode);

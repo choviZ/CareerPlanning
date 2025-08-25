@@ -9,6 +9,12 @@ declare namespace API {
     status?: number
   }
 
+  type addResultCareerMappingParams = {
+    assessmentResultId: number
+    careerId: number
+    compatibilityScore: number
+  }
+
   type AssessmentQuestionVo = {
     id?: number
     testType?: string
@@ -21,31 +27,15 @@ declare namespace API {
     updatedAt?: string
   }
 
-  type AssessmentResultVo = {
-    id?: number
-    userId?: number
-    testType?: string
-    resultCode?: string
-    dimensionScores?: string
-    createdAt?: string
-    isDeleted?: number
-  }
-
-  type BaseResponseAssessmentResultVo = {
-    code?: number
-    data?: AssessmentResultVo
-    message?: string
-  }
-
   type BaseResponseBoolean = {
     code?: number
     data?: boolean
     message?: string
   }
 
-  type BaseResponseCareer = {
+  type BaseResponseCareerVo = {
     code?: number
-    data?: Career
+    data?: CareerVo
     message?: string
   }
 
@@ -61,15 +51,33 @@ declare namespace API {
     message?: string
   }
 
-  type BaseResponsePageCareer = {
+  type BaseResponsePageCareerVo = {
     code?: number
-    data?: PageCareer
+    data?: PageCareerVo
+    message?: string
+  }
+
+  type BaseResponsePageResultCareerMapping = {
+    code?: number
+    data?: PageResultCareerMapping
     message?: string
   }
 
   type BaseResponsePageUser = {
     code?: number
     data?: PageUser
+    message?: string
+  }
+
+  type BaseResponseResultCareerMapping = {
+    code?: number
+    data?: ResultCareerMapping
+    message?: string
+  }
+
+  type BaseResponseUserAssessmentVo = {
+    code?: number
+    data?: UserAssessmentVo
     message?: string
   }
 
@@ -83,18 +91,6 @@ declare namespace API {
     code?: number
     data?: UserVO
     message?: string
-  }
-
-  type Career = {
-    id?: number
-    name?: string
-    description?: string
-    requiredSkills?: string
-    jobOutlook?: string
-    averageSalary?: string
-    createdAt?: string
-    updatedAt?: string
-    isDeleted?: boolean
   }
 
   type CareerAddRequest = {
@@ -126,11 +122,27 @@ declare namespace API {
     averageSalary?: string
   }
 
+  type CareerVo = {
+    id?: number
+    name?: string
+    description?: string
+    requiredSkills?: string
+    jobOutlook?: string
+    averageSalary?: string
+    createdAt?: string
+    updatedAt?: string
+    isDeleted?: boolean
+  }
+
   type deleteCareerParams = {
     id: number
   }
 
   type deleteQuestionParams = {
+    id: number
+  }
+
+  type deleteResultCareerMappingParams = {
     id: number
   }
 
@@ -157,8 +169,17 @@ declare namespace API {
     dimension?: string
   }
 
-  type PageCareer = {
-    records?: Career[]
+  type PageCareerVo = {
+    records?: CareerVo[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type PageResultCareerMapping = {
+    records?: ResultCareerMapping[]
     pageNumber?: number
     pageSize?: number
     totalPage?: number
@@ -175,8 +196,33 @@ declare namespace API {
     optimizeCountQuery?: boolean
   }
 
+  type queryBestCompatibleCareerParams = {
+    testType?: string
+    resultCode?: string
+  }
+
+  type queryMappingByResultCodeParams = {
+    testType?: string
+    resultCode?: string
+    pageNum?: number
+    pageSize?: number
+  }
+
   type queryQuestionParams = {
     testType: string
+  }
+
+  type ResultCareerMapping = {
+    id?: number
+    resultId?: number
+    testType?: string
+    resultCode?: string
+    careerId?: number
+    careerName?: string
+    description?: string
+    compatibilityScore?: number
+    createdAt?: string
+    isDeleted?: number
   }
 
   type UpdateQuestionRequest = {
@@ -187,6 +233,13 @@ declare namespace API {
     options?: string
     sortOrder?: number
     status?: number
+  }
+
+  type UpdateResultCareerRequest = {
+    id?: number
+    assessmentResultId?: number
+    careerId?: number
+    compatibilityScore?: number
   }
 
   type User = {
@@ -210,6 +263,23 @@ declare namespace API {
     userAvatar?: string
     userProfile?: string
     userRole?: string
+  }
+
+  type UserAssessmentVo = {
+    id?: number
+    testType?: string
+    resultCode?: string
+    resultName?: string
+    resultDesc?: string
+    resultIcon?: string
+    choices?: string
+    dimensionScores?: string
+    userId?: number
+    careerId?: number
+    careerName?: string
+    careerDescription?: string
+    createdAt?: string
+    isDeleted?: number
   }
 
   type UserLoginRequest = {

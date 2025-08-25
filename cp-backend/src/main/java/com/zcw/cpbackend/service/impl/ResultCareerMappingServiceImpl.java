@@ -43,6 +43,7 @@ public class ResultCareerMappingServiceImpl extends ServiceImpl<ResultCareerMapp
         // 构造
         ResultCareerMapping resultCareerMapping = ResultCareerMapping.builder()
                 .testType(assessmentResult.getTestType())
+                .resultId(assessmentResultId)
                 .resultCode(assessmentResult.getResultCode())
                 .careerId(careerId)
                 .careerName(career.getName())
@@ -89,28 +90,42 @@ public class ResultCareerMappingServiceImpl extends ServiceImpl<ResultCareerMapp
         return this.removeById(id);
     }
 
+    /**
+     * 构建通用的查询条件
+     * 
+     * @param testType 评估类型
+     * @param resultCode 评估结果
+     * @return 查询条件包装器
+     */
+    private QueryWrapper buildCommonQueryWrapper(String testType, String resultCode) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        // 如果提供了测评类型，则添加到查询条件
+        if (StrUtil.isNotBlank(testType)) {
+            TestTypeEnum typeEnum = TestTypeEnum.getEnumByValue(testType);
+            ThrowUtils.throwIf(typeEnum == null, ErrorCode.PARAMS_ERROR, "评估类型错误");
+            queryWrapper.eq(ResultCareerMapping::getTestType, testType);
+        }
+        // 如果提供了结果代码，则添加到查询条件
+        if (StrUtil.isNotBlank(resultCode)) {
+            queryWrapper.eq(ResultCareerMapping::getResultCode, resultCode);
+        }
+        return queryWrapper;
+    }
+
     @Override
     public Page<ResultCareerMapping> queryMappingByResultCode(String testType, String resultCode, int pageNum, int pageSize) {
-        // 校验
-        TestTypeEnum typeEnum = TestTypeEnum.getEnumByValue(testType);
-        ThrowUtils.throwIf(typeEnum == null, ErrorCode.PARAMS_ERROR, "评估类型错误");
-        ThrowUtils.throwIf(StrUtil.isBlank(resultCode), ErrorCode.PARAMS_ERROR, "评估结果不能为空");
         // 构造查询条件
-        QueryWrapper queryWrapper = new QueryWrapper()
-                .eq(ResultCareerMapping::getTestType, testType)
-                .eq(ResultCareerMapping::getResultCode, resultCode);
+        QueryWrapper queryWrapper = buildCommonQueryWrapper(testType, resultCode);
         // 分页查询
-        return this.page(Page.of(pageNum, pageSize),queryWrapper);
+        return this.page(Page.of(pageNum, pageSize), queryWrapper);
     }
 
     @Override
     public ResultCareerMapping queryBastCompatibleCareer(String testType, String resultCode) {
         // 构造查询条件
-        QueryWrapper queryWrapper = new QueryWrapper()
-                .eq(ResultCareerMapping::getTestType, testType)
-                .eq(ResultCareerMapping::getResultCode, resultCode)
-                .orderBy(ResultCareerMapping::getCompatibilityScore,false)
-                .limit(1);
+        QueryWrapper queryWrapper = buildCommonQueryWrapper(testType, resultCode);
+        // 按兼容性评分降序排序并限制返回一条记录
+        queryWrapper.orderBy(ResultCareerMapping::getCompatibilityScore, false).limit(1);
         return this.getOne(queryWrapper);
     }
 }

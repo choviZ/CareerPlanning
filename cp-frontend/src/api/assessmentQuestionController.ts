@@ -33,7 +33,7 @@ export async function doAssessment(
   body: API.DoAssessmentRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponseAssessmentResultVo>('/assessment/do', {
+  return request<API.BaseResponseUserAssessmentVo>('/assessment/do', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

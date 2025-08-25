@@ -35,7 +35,7 @@ export async function getCareerById(
   options?: { [key: string]: any }
 ) {
   const { id: param0, ...queryParams } = params
-  return request<API.BaseResponseCareer>(`/career/get/${param0}`, {
+  return request<API.BaseResponseCareerVo>(`/career/get/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
@@ -47,7 +47,7 @@ export async function listCareerByPage(
   body: API.CareerQueryRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponsePageCareer>('/career/list/page', {
+  return request<API.BaseResponsePageCareerVo>('/career/list/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
