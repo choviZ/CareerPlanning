@@ -1,12 +1,19 @@
 declare namespace API {
+  type AddAssessmentResultRequest = {
+    testType?: string
+    resultCode?: string
+    resultName?: string
+    resultDesc?: string
+  }
+
   type AddQuestionRequest = {
     id?: number
     testType?: string
     content?: string
     dimension?: string
-    options?: string
-    sortOrder?: number
     status?: number
+    options?: OptionDTO
+    sortOrder?: number
   }
 
   type addResultCareerMappingParams = {
@@ -25,6 +32,23 @@ declare namespace API {
     status?: number
     createdAt?: string
     updatedAt?: string
+  }
+
+  type AssessmentResultVo = {
+    id?: number
+    testType?: string
+    resultCode?: string
+    resultName?: string
+    resultDesc?: string
+    createdAt?: string
+    updatedAt?: string
+    isDeleted?: number
+  }
+
+  type BaseResponseAssessmentResultVo = {
+    code?: number
+    data?: AssessmentResultVo
+    message?: string
   }
 
   type BaseResponseBoolean = {
@@ -48,6 +72,12 @@ declare namespace API {
   type BaseResponseLong = {
     code?: number
     data?: number
+    message?: string
+  }
+
+  type BaseResponsePageAssessmentResultVo = {
+    code?: number
+    data?: PageAssessmentResultVo
     message?: string
   }
 
@@ -134,6 +164,10 @@ declare namespace API {
     isDeleted?: boolean
   }
 
+  type deleteAssessmentResultParams = {
+    id: number
+  }
+
   type deleteCareerParams = {
     id: number
   }
@@ -155,6 +189,10 @@ declare namespace API {
     userAnswers?: string[]
   }
 
+  type getAssessmentResultByIdParams = {
+    id: number
+  }
+
   type getCareerByIdParams = {
     id: number
   }
@@ -167,6 +205,15 @@ declare namespace API {
     key?: string
     value?: string
     dimension?: string
+  }
+
+  type PageAssessmentResultVo = {
+    records?: AssessmentResultVo[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
   }
 
   type PageCareerVo = {
@@ -196,6 +243,17 @@ declare namespace API {
     optimizeCountQuery?: boolean
   }
 
+  type QueryAssessmentResultRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    testType?: string
+    resultCode?: string
+    resultName?: string
+    resultDesc?: string
+  }
+
   type queryBestCompatibleCareerParams = {
     testType?: string
     resultCode?: string
@@ -223,6 +281,14 @@ declare namespace API {
     compatibilityScore?: number
     createdAt?: string
     isDeleted?: number
+  }
+
+  type UpdateAssessmentResultRequest = {
+    id?: number
+    testType?: string
+    resultCode?: string
+    resultName?: string
+    resultDesc?: string
   }
 
   type UpdateQuestionRequest = {

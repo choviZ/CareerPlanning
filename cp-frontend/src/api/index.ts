@@ -5,12 +5,14 @@
 import * as userController from './userController'
 import * as resultCareerMappingController from './resultCareerMappingController'
 import * as careerController from './careerController'
+import * as assessmentResultController from './assessmentResultController'
 import * as assessmentQuestionController from './assessmentQuestionController'
 import * as healthController from './healthController'
 export default {
   userController,
   resultCareerMappingController,
   careerController,
+  assessmentResultController,
   assessmentQuestionController,
   healthController,
 }

@@ -152,6 +152,7 @@ import {
   updateResultCareerMapping
 } from '@/api/resultCareerMappingController'
 import { listCareerByPage } from '@/api/careerController'
+import { listAssessmentResultByPage } from '@/api/assessmentResultController.ts'
 
 // 搜索参数
 const searchParams = ref({
@@ -237,15 +238,14 @@ const findAssessmentResultId = async (testType: string, resultCode: string): Pro
   if (!testType || !resultCode) return undefined
 
   try {
-    // 通过查询现有映射来获取resultId
-    const res = await queryMappingByResultCode({
+    const res = await listAssessmentResultByPage({
       testType,
       resultCode,
-      pageNum: 1,
+      current: 1,
       pageSize: 1
     })
     if (res.data.code === 200 && res.data.data && res.data.data.records && res.data.data.records.length > 0) {
-      return res.data.data.records[0].resultId
+      return res.data.data.records[0].id
     }
     ElMessage.warning(`未找到测试类型 ${testType} 结果代码 ${resultCode} 对应的评估结果`)
     return undefined

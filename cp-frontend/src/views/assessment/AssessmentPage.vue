@@ -43,7 +43,7 @@ const testType = 'MBTI'
 const currentQuestionIndex = ref(0)
 const userAnswers = ref<string[]>([])
 const showResult = ref(false)
-const assessmentResult = ref<API.AssessmentResultVo>({})
+const assessmentResult = ref<API.UserAssessmentVo>({})
 
 // 获取问题列表
 const fetchQuestions = async () => {
