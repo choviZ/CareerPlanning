@@ -118,3 +118,65 @@ CREATE TABLE result_career_mapping
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='测评结果职业关联表';
+
+-- 简历表
+CREATE TABLE resume
+(
+    id           BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    user_id      BIGINT       NOT NULL COMMENT '用户ID',
+    title        VARCHAR(100) NOT NULL COMMENT '简历标题',
+    template_id  BIGINT COMMENT '模板ID',
+    content      JSON COMMENT '简历内容（JSON格式存储）',
+    name         VARCHAR(50) COMMENT '姓名（冗余字段，便于查询）',
+    job_intention VARCHAR(100) COMMENT '求职意向（冗余字段，便于查询）',
+    status       TINYINT   DEFAULT 1 COMMENT '状态：1-草稿，2-已完成，3-已发布',
+    share_code   VARCHAR(32) COMMENT '分享码',
+    is_public    TINYINT   DEFAULT 0 COMMENT '是否公开：0-私有，1-公开',
+    created_at   DATETIME  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at   DATETIME  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_deleted   TINYINT   DEFAULT 0 COMMENT '是否删除（0-否，1-是）',
+    INDEX idx_user_id (user_id),
+    INDEX idx_status (status),
+    INDEX idx_share_code (share_code),
+    INDEX idx_name (name),
+    INDEX idx_job_intention (job_intention),
+    CONSTRAINT fk_resume_user FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='简历表';
+
+-- 简历模板表
+CREATE TABLE resume_template
+(
+    id              BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    name            VARCHAR(100) NOT NULL COMMENT '模板名称',
+    description     TEXT COMMENT '模板描述',
+    preview_url     VARCHAR(255) COMMENT '预览图URL',
+    template_config JSON COMMENT '模板配置（样式、布局等）',
+    default_content JSON COMMENT '默认内容结构',
+    is_active       TINYINT   DEFAULT 1 COMMENT '是否启用：1-启用，0-禁用',
+    sort_order      INT       DEFAULT 0 COMMENT '排序',
+    created_at      DATETIME  DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at      DATETIME  DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_deleted      TINYINT   DEFAULT 0 COMMENT '是否删除（0-否，1-是）',
+    INDEX idx_is_active (is_active),
+    INDEX idx_sort_order (sort_order)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='简历模板表';
+
+-- 简历版本表
+CREATE TABLE resume_version
+(
+    id             BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    resume_id      BIGINT NOT NULL COMMENT '简历ID',
+    version_number INT    NOT NULL COMMENT '版本号',
+    content        JSON COMMENT '版本内容快照',
+    remark         VARCHAR(200) COMMENT '版本备注',
+    created_at     DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    INDEX idx_resume_id (resume_id),
+    INDEX idx_version_number (version_number),
+    CONSTRAINT fk_version_resume FOREIGN KEY (resume_id) REFERENCES resume (id) ON DELETE CASCADE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='简历版本表';
