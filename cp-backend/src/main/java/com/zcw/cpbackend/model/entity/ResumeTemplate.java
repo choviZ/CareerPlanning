@@ -68,16 +68,6 @@ public class ResumeTemplate implements Serializable {
     private Integer templateType;
 
     /**
-     * 是否免费：0-付费，1-免费
-     */
-    private Integer isFree;
-
-    /**
-     * 价格（分）
-     */
-    private Integer price;
-
-    /**
      * 排序权重
      */
     private Integer sortOrder;
@@ -85,12 +75,7 @@ public class ResumeTemplate implements Serializable {
     /**
      * 状态：0-禁用，1-启用
      */
-    private Integer status;
-
-    /**
-     * 使用次数
-     */
-    private Integer useCount;
+    private Integer isActive;
 
     /**
      * 创建时间

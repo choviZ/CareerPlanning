@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * 项目经历实体类
+ * 注意：此类作为JSON字段的一部分存储，不需要独立的数据库表和id字段
  *
  * @author zcw
  */
@@ -16,11 +17,6 @@ import java.util.List;
 public class ProjectExperience implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 唯一标识
-     */
-    private String id;
 
     /**
      * 项目名称

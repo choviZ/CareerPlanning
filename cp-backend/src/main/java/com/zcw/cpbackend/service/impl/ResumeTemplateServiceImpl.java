@@ -67,11 +67,8 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
                 .templateConfig(resumeTemplateAddRequest.getTemplateConfig())
                 .defaultContent(resumeTemplateAddRequest.getDefaultContent())
                 .templateType(templateType)
-                .isFree(isFree)
-                .price(resumeTemplateAddRequest.getPrice())
                 .sortOrder(resumeTemplateAddRequest.getSortOrder() != null ? resumeTemplateAddRequest.getSortOrder() : 0)
-                .status(status)
-                .useCount(0)
+                .isActive(status)
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
@@ -129,10 +126,8 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
                 .templateConfig(resumeTemplateUpdateRequest.getTemplateConfig())
                 .defaultContent(resumeTemplateUpdateRequest.getDefaultContent())
                 .templateType(resumeTemplateUpdateRequest.getTemplateType())
-                .isFree(resumeTemplateUpdateRequest.getIsFree())
-                .price(resumeTemplateUpdateRequest.getPrice())
                 .sortOrder(resumeTemplateUpdateRequest.getSortOrder())
-                .status(resumeTemplateUpdateRequest.getStatus())
+                .isActive(resumeTemplateUpdateRequest.getStatus())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
@@ -186,7 +181,7 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
     public List<ResumeTemplateVo> getAvailableTemplates() {
         // 查询启用状态的模板，按排序权重和创建时间排序
         QueryWrapper queryWrapper = QueryWrapper.create()
-                .eq(ResumeTemplate::getStatus,1)
+                .eq(ResumeTemplate::getIsActive,1)
                 .orderBy(ResumeTemplate::getSortOrder, false)
                 .orderBy(ResumeTemplate::getCreatedAt, false);
 
@@ -208,15 +203,7 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
         if (resumeTemplate == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND_ERROR, "模板不存在");
         }
-
-        // 增加使用次数
-        ResumeTemplate updateTemplate = ResumeTemplate.builder()
-                .id(templateId)
-                .useCount(resumeTemplate.getUseCount() + 1)
-                .updatedAt(LocalDateTime.now())
-                .build();
-
-        return this.updateById(updateTemplate);
+        return this.updateById(resumeTemplate);
     }
 
     @Override
@@ -238,7 +225,7 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
         // 更新状态
         ResumeTemplate updateTemplate = ResumeTemplate.builder()
                 .id(id)
-                .status(status)
+                .isActive(status)
                 .updatedAt(LocalDateTime.now())
                 .build();
 
@@ -272,17 +259,8 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
         if (templateType != null) {
             queryWrapper.eq(ResumeTemplate::getTemplateType, templateType);
         }
-        if (isFree != null) {
-            queryWrapper.eq(ResumeTemplate::getIsFree, isFree);
-        }
         if (status != null) {
-            queryWrapper.eq(ResumeTemplate::getStatus, status);
-        }
-        if (minPrice != null && minPrice > 0) {
-            queryWrapper.ge(ResumeTemplate::getPrice, minPrice);
-        }
-        if (maxPrice != null && maxPrice > 0) {
-            queryWrapper.le(ResumeTemplate::getPrice, maxPrice);
+            queryWrapper.eq(ResumeTemplate::getIsActive, status);
         }
         // 按排序权重倒序，创建时间倒序
         queryWrapper.orderBy(ResumeTemplate::getSortOrder, false);

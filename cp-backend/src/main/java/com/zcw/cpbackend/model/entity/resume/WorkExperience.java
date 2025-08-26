@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 /**
  * 工作经历实体类
+ * 注意：此类作为JSON字段的一部分存储，不需要独立的数据库表和id字段
  *
  * @author zcw
  */
@@ -15,11 +16,6 @@ import java.time.LocalDate;
 public class WorkExperience implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 唯一标识
-     */
-    private String id;
 
     /**
      * 公司名称
