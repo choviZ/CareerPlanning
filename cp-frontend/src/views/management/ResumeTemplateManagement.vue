@@ -36,7 +36,7 @@
       <el-table :data="tableData" v-loading="loading" style="width: 100%">
         <el-table-column prop="id" label="ID" width="80"></el-table-column>
         <el-table-column prop="templateName" label="模板名称" width="200"></el-table-column>
-        <el-table-column prop="description" label="描述" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="templateDesc" label="描述" show-overflow-tooltip></el-table-column>
         <el-table-column prop="templateType" label="类型" width="100">
           <template #default="{ row }">
             <el-tag :type="getTemplateTypeTag(row.templateType)">
@@ -87,7 +87,7 @@
     </el-card>
 
     <!-- 新增/编辑弹窗 -->
-    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="800px"
+    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="960px"
                :close-on-click-modal="false">
       <el-form :model="form" :rules="formRules" ref="formRef" label-width="120px">
         <el-row :gutter="20">
@@ -106,7 +106,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="模板描述" prop="description">
+        <el-form-item label="模板描述" prop="templateDesc">
           <el-input v-model="form.templateDesc" type="textarea" :rows="3"
                     placeholder="请输入模板描述"></el-input>
         </el-form-item>
@@ -115,6 +115,31 @@
                            placeholder="数字越小排序越靠前"></el-input-number>
         </el-form-item>
 
+        <!-- 模板配置 -->
+        <el-form-item label="模板配置" prop="templateConfig">
+          <el-input v-model="templateConfigStr" type="textarea" :rows="8"
+                    placeholder="请输入模板配置JSON，包含布局、颜色、字体等设置"></el-input>
+          <div class="config-help">
+            <el-text size="small" type="info">
+              配置示例：布局类型(single-column/two-column)、颜色主题、字体设置等
+            </el-text>
+          </div>
+        </el-form-item>
+
+        <!-- 默认内容 -->
+        <el-form-item label="默认内容" prop="defaultContent">
+          <el-input v-model="defaultContentStr" type="textarea" :rows="6"
+                    placeholder="请输入默认简历内容JSON，包含基本信息、教育经历、工作经验等"></el-input>
+          <div class="config-help">
+            <el-text size="small" type="info">
+              包含：basicInfo、education、workExperience、projectExperience、skills等字段
+            </el-text>
+          </div>
+        </el-form-item>
+        <!-- 状态 -->
+        <el-form-item label="是否启用" prop="isActive">
+          <el-switch v-model="form.isActive" :active-value="1" :inactive-value="0"></el-switch>
+        </el-form-item>
       </el-form>
       <template #footer>
         <span class="dialog-footer">
@@ -183,6 +208,7 @@ const form = ref<API.ResumeTemplateVo>({
   templateName: '',
   templateDesc: '',
   templateConfig: {},
+  defaultContent: {},
   templateType: 1,
   sortOrder: 0
 })
@@ -206,11 +232,16 @@ const formRules = {
   sortOrder: [
     { type: 'number', min: 0, message: '排序值不能小于0', trigger: 'blur' }
   ]
+
 }
 
 // 预览相关
 const previewVisible = ref(false)
 const previewTemplate = ref<API.ResumeTemplateVo | null>(null)
+
+// JSON字符串处理
+const templateConfigStr = ref('')
+const defaultContentStr = ref('')
 
 /**
  * 加载表格数据
@@ -287,28 +318,50 @@ const handleSizeChange = (size: number) => {
  */
 const handleAdd = () => {
   dialogTitle.value = '新增模板'
+  const defaultConfig = {
+    layout: {
+      type: 'single-column'
+    },
+    colors: {
+      primary: '#2c3e50',
+      secondary: '#3498db',
+      text: '#2c3e50',
+      background: '#ffffff'
+    },
+    typography: {
+      fontFamily: '\'Microsoft YaHei\', \'PingFang SC\', sans-serif',
+      fontSize: '14px',
+      lineHeight: '1.6'
+    }
+  }
+
+  const defaultContent = {
+    basicInfo: {
+      name: '姓名',
+      email: 'email@example.com',
+      phone: '138****8888',
+      address: '所在城市',
+      jobIntention: '求职意向'
+    },
+    education: [],
+    workExperience: [],
+    projectExperience: [],
+    skills: []
+  }
+
   form.value = {
     templateName: '',
     templateDesc: '',
-    templateConfig: {
-      layout: {
-        type: 'single-column'
-      },
-      colors: {
-        primary: '#2c3e50',
-        secondary: '#3498db',
-        text: '#2c3e50',
-        background: '#ffffff'
-      },
-      typography: {
-        fontFamily: '\'Microsoft YaHei\', \'PingFang SC\', sans-serif',
-        fontSize: '14px',
-        lineHeight: '1.6'
-      }
-    },
+    templateConfig: defaultConfig,
+    defaultContent: defaultContent,
     templateType: 1,
     sortOrder: 0
   }
+
+  // 初始化JSON字符串
+  templateConfigStr.value = JSON.stringify(defaultConfig, null, 2)
+  defaultContentStr.value = JSON.stringify(defaultContent, null, 2)
+
   dialogVisible.value = true
 }
 
@@ -325,8 +378,14 @@ const handleEdit = (row: API.ResumeTemplateUpdateRequest) => {
     templateType: row.templateType || 1,
     templateConfig: row.templateConfig || {},
     defaultContent: row.defaultContent || {},
-    sortOrder: row.sortOrder || 0
+    sortOrder: row.sortOrder || 0,
+    isActive: row.isActive || 0,
   }
+
+  // 将对象转换为JSON字符串显示
+  templateConfigStr.value = JSON.stringify(row.templateConfig || {}, null, 2)
+  defaultContentStr.value = JSON.stringify(row.defaultContent || {}, null, 2)
+
   dialogVisible.value = true
 }
 
@@ -355,7 +414,7 @@ const handleDelete = (row: API.ResumeTemplateVo) => {
     }
   ).then(async () => {
     try {
-      const res = await deleteResumeTemplate({ id: row.id! })
+      const res = await deleteResumeTemplate(row.id!)
       if (res.data.code === 200) {
         ElMessage.success('删除成功')
         await loadTableData()
@@ -409,15 +468,37 @@ const handleConfirm = async () => {
     if (!valid) {
       return false
     }
+    // 验证和解析JSON字符串
+    let templateConfig = {}
+    let defaultContent = {}
+    try {
+      if (templateConfigStr.value.trim()) {
+        templateConfig = JSON.parse(templateConfigStr.value)
+      }
+    } catch (error) {
+      ElMessage.error('模板配置JSON格式错误，请检查语法')
+      return
+    }
+
+    try {
+      if (defaultContentStr.value.trim()) {
+        defaultContent = JSON.parse(defaultContentStr.value)
+      }
+    } catch (error) {
+      ElMessage.error('默认内容JSON格式错误，请检查语法')
+      return
+    }
+
     submitLoading.value = true
     // 准备提交数据
     const submitData = {
       templateName: form.value.templateName,
-      description: form.value.templateDesc,
+      templateDesc: form.value.templateDesc,
       templateType: form.value.templateType,
-      templateConfig: form.value.templateConfig || {},
-      defaultContent: form.value.defaultContent || {},
-      sortOrder: form.value.sortOrder || 0
+      templateConfig: templateConfig,
+      defaultContent: defaultContent,
+      sortOrder: form.value.sortOrder || 0,
+      isActive: form.value.isActive
     }
     let res
     if (form.value.id) {
@@ -439,11 +520,6 @@ const handleConfirm = async () => {
       await loadTableData()
     } else {
       ElMessage.error(res.data.message || '操作失败')
-    }
-  } catch (error) {
-    console.error('操作失败:', error)
-    if (error !== false) { // 表单验证失败时error为false
-      ElMessage.error('操作失败')
     }
   } finally {
     submitLoading.value = false
@@ -521,5 +597,10 @@ onMounted(() => {
   border-radius: 4px;
   padding: 20px;
   background-color: #f5f7fa;
+}
+
+.config-help {
+  margin-top: 5px;
+  padding: 5px 0;
 }
 </style>

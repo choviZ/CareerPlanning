@@ -45,11 +45,6 @@ const router = createRouter({
       component: () => import('@/views/management/AssessmentResultManagement.vue')
     },
     {
-      path: '/resume/create',
-      name: 'ResumeCreate',
-      component: () => import('@/views/resume/Resume.vue')
-    },
-    {
       path: '/management/resume-template',
       name: 'ResumeTemplateManagement',
       component: () => import('@/views/management/ResumeTemplateManagement.vue')
