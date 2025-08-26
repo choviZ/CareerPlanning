@@ -151,7 +151,7 @@
 
 
     <!-- 预览弹窗 -->
-    <el-dialog v-model="previewVisible" title="模板预览" width="90%" :close-on-click-modal="false">
+    <el-dialog v-model="previewVisible" title="模板预览" width="60%" :close-on-click-modal="false" draggable>
       <div class="preview-container">
         <ResumePreview
           v-if="previewTemplate"
@@ -177,6 +177,7 @@ import {
   deleteResumeTemplate,
   updateTemplateStatus
 } from '@/api/jianlimobanguanli'
+import ResumePreview from '@/components/ResumePreview.vue'
 
 // 搜索参数
 const searchParams = ref<API.ResumeTemplateQueryRequest>({
@@ -222,7 +223,7 @@ const formRules = {
     { required: true, message: '请输入模板名称', trigger: 'blur' },
     { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
   ],
-  description: [
+  templateDesc: [
     { required: true, message: '请输入模板描述', trigger: 'blur' },
     { min: 5, max: 200, message: '长度在 5 到 200 个字符', trigger: 'blur' }
   ],
@@ -379,7 +380,7 @@ const handleEdit = (row: API.ResumeTemplateUpdateRequest) => {
     templateConfig: row.templateConfig || {},
     defaultContent: row.defaultContent || {},
     sortOrder: row.sortOrder || 0,
-    isActive: row.isActive || 0,
+    isActive: row.isActive || 0
   }
 
   // 将对象转换为JSON字符串显示
@@ -476,7 +477,7 @@ const handleConfirm = async () => {
         templateConfig = JSON.parse(templateConfigStr.value)
       }
     } catch (error) {
-      ElMessage.error('模板配置JSON格式错误，请检查语法')
+      ElMessage.error('模板配置JSON格式错误，请检查语法' + error)
       return
     }
 
@@ -485,7 +486,7 @@ const handleConfirm = async () => {
         defaultContent = JSON.parse(defaultContentStr.value)
       }
     } catch (error) {
-      ElMessage.error('默认内容JSON格式错误，请检查语法')
+      ElMessage.error('默认内容JSON格式错误，请检查语法' + error)
       return
     }
 
@@ -591,12 +592,23 @@ onMounted(() => {
 
 
 .preview-container {
-  height: 600px;
+  height: 700px;
   overflow-y: auto;
   border: 1px solid #e4e7ed;
-  border-radius: 4px;
-  padding: 20px;
+  border-radius: 8px;
+  padding: 0;
   background-color: #f5f7fa;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 20px;
+}
+
+.preview-container :deep(.resume-preview) {
+  transform: scale(0.8);
+  transform-origin: top center;
+  margin: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .config-help {
