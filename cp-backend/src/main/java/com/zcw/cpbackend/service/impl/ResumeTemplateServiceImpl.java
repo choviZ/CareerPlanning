@@ -10,7 +10,7 @@ import com.zcw.cpbackend.mapper.ResumeTemplateMapper;
 import com.zcw.cpbackend.model.dto.resumetemplate.ResumeTemplateAddRequest;
 import com.zcw.cpbackend.model.dto.resumetemplate.ResumeTemplateQueryRequest;
 import com.zcw.cpbackend.model.dto.resumetemplate.ResumeTemplateUpdateRequest;
-import com.zcw.cpbackend.model.entity.ResumeTemplate;
+import com.zcw.cpbackend.model.entity.resume.template.ResumeTemplate;
 import com.zcw.cpbackend.model.vo.ResumeTemplateVo;
 import com.zcw.cpbackend.service.ResumeTemplateService;
 import org.apache.commons.lang3.StringUtils;
@@ -38,8 +38,7 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
 
         String templateName = resumeTemplateAddRequest.getTemplateName();
         Integer templateType = resumeTemplateAddRequest.getTemplateType();
-        Integer isFree = resumeTemplateAddRequest.getIsFree();
-        Integer status = resumeTemplateAddRequest.getStatus();
+        Integer status = resumeTemplateAddRequest.getIsActive();
 
         if (StringUtils.isBlank(templateName)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "模板名称不能为空");
@@ -47,18 +46,9 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
         if (templateType == null || (templateType != 1 && templateType != 2 && templateType != 3)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "模板类型参数错误");
         }
-        if (isFree == null || (isFree != 0 && isFree != 1)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "免费状态参数错误");
-        }
         if (status == null || (status != 0 && status != 1)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "状态参数错误");
         }
-
-        // 如果是付费模板，价格必须大于0
-        if (isFree == 0 && (resumeTemplateAddRequest.getPrice() == null || resumeTemplateAddRequest.getPrice() <= 0)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "付费模板价格必须大于0");
-        }
-
         // 创建模板对象
         ResumeTemplate resumeTemplate = ResumeTemplate.builder()
                 .templateName(templateName)
@@ -127,7 +117,7 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
                 .defaultContent(resumeTemplateUpdateRequest.getDefaultContent())
                 .templateType(resumeTemplateUpdateRequest.getTemplateType())
                 .sortOrder(resumeTemplateUpdateRequest.getSortOrder())
-                .isActive(resumeTemplateUpdateRequest.getStatus())
+                .isActive(resumeTemplateUpdateRequest.getIsActive())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
@@ -248,10 +238,7 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
         QueryWrapper queryWrapper = QueryWrapper.create();
         String templateName = resumeTemplateQueryRequest.getTemplateName();
         Integer templateType = resumeTemplateQueryRequest.getTemplateType();
-        Integer isFree = resumeTemplateQueryRequest.getIsFree();
-        Integer status = resumeTemplateQueryRequest.getStatus();
-        Integer minPrice = resumeTemplateQueryRequest.getMinPrice();
-        Integer maxPrice = resumeTemplateQueryRequest.getMaxPrice();
+        Integer status = resumeTemplateQueryRequest.getIsActive();
         // 构造查询条件
         if (StrUtil.isNotBlank(templateName)) {
             queryWrapper.like(ResumeTemplate::getTemplateName, templateName);

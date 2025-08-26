@@ -1,8 +1,8 @@
 package com.zcw.cpbackend.model.vo;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.zcw.cpbackend.model.entity.Resume;
-import com.zcw.cpbackend.model.entity.resume.ResumeContent;
+import com.zcw.cpbackend.model.entity.resume.Resume;
+import com.zcw.cpbackend.model.dto.resume.ResumeContent;
 import lombok.Data;
 
 import java.io.Serializable;

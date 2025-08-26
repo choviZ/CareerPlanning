@@ -1,9 +1,8 @@
 package com.zcw.cpbackend.service;
 
+import com.zcw.cpbackend.model.dto.resume.*;
 import com.zcw.cpbackend.model.dto.resumetemplate.ResumeTemplateAddRequest;
-import com.zcw.cpbackend.model.entity.resume.*;
 import com.zcw.cpbackend.model.vo.ResumeTemplateVo;
-import com.zcw.cpbackend.service.ResumeTemplateService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

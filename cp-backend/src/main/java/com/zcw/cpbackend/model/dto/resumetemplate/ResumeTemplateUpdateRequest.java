@@ -1,6 +1,6 @@
 package com.zcw.cpbackend.model.dto.resumetemplate;
 
-import com.zcw.cpbackend.model.entity.resume.ResumeContent;
+import com.zcw.cpbackend.model.dto.resume.ResumeContent;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -51,16 +51,6 @@ public class ResumeTemplateUpdateRequest implements Serializable {
     private Integer templateType;
 
     /**
-     * 是否免费：0-付费，1-免费
-     */
-    private Integer isFree;
-
-    /**
-     * 价格（分）
-     */
-    private Integer price;
-
-    /**
      * 排序权重
      */
     private Integer sortOrder;
@@ -68,5 +58,5 @@ public class ResumeTemplateUpdateRequest implements Serializable {
     /**
      * 状态：0-禁用，1-启用
      */
-    private Integer status;
+    private Integer isActive;
 }

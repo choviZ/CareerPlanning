@@ -1,4 +1,4 @@
-package com.zcw.cpbackend.model.entity.resume;
+package com.zcw.cpbackend.model.dto.resume;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

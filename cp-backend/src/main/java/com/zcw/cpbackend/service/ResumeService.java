@@ -5,7 +5,7 @@ import com.mybatisflex.core.service.IService;
 import com.zcw.cpbackend.model.dto.resume.ResumeAddRequest;
 import com.zcw.cpbackend.model.dto.resume.ResumeQueryRequest;
 import com.zcw.cpbackend.model.dto.resume.ResumeUpdateRequest;
-import com.zcw.cpbackend.model.entity.Resume;
+import com.zcw.cpbackend.model.entity.resume.Resume;
 import com.zcw.cpbackend.model.vo.ResumeVo;
 
 /**

@@ -28,22 +28,8 @@ public class ResumeTemplateQueryRequest extends PageRequest implements Serializa
     private Integer templateType;
 
     /**
-     * 是否免费：0-付费，1-免费
-     */
-    private Integer isFree;
-
-    /**
      * 状态：0-禁用，1-启用
      */
-    private Integer status;
+    private Integer isActive;
 
-    /**
-     * 最小价格（分）
-     */
-    private Integer minPrice;
-
-    /**
-     * 最大价格（分）
-     */
-    private Integer maxPrice;
 }

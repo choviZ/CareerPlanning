@@ -3,6 +3,8 @@
 // API 更新时间：
 // API 唯一标识：
 import * as userController from './userController'
+import * as jianlimobanguanli from './jianlimobanguanli'
+import * as jianliguanli from './jianliguanli'
 import * as resultCareerMappingController from './resultCareerMappingController'
 import * as careerController from './careerController'
 import * as assessmentResultController from './assessmentResultController'
@@ -10,6 +12,8 @@ import * as assessmentQuestionController from './assessmentQuestionController'
 import * as healthController from './healthController'
 export default {
   userController,
+  jianlimobanguanli,
+  jianliguanli,
   resultCareerMappingController,
   careerController,
   assessmentResultController,

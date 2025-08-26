@@ -63,7 +63,8 @@ const menuItems = [
   { path: '/assessment', label: '职业测评' },
   { path: '/management/career', label: '职业管理' },
   { path: '/management/assessment-result', label: '评估结果管理' },
-  { path: '/management/result-career-mapping', label: '测评结果映射' }
+  { path: '/management/result-career-mapping', label: '测评结果映射' },
+  { path: '/management/resume-template', label: '简历模板管理' }
 ]
 
 const toLoginPage = () => {

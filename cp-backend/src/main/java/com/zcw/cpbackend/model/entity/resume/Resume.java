@@ -1,11 +1,11 @@
-package com.zcw.cpbackend.model.entity;
+package com.zcw.cpbackend.model.entity.resume;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import com.mybatisflex.core.keygen.KeyGenerators;
-import com.zcw.cpbackend.model.entity.resume.ResumeContent;
+import com.zcw.cpbackend.model.dto.resume.ResumeContent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

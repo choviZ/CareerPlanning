@@ -2,7 +2,7 @@ package com.zcw.cpbackend.config;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.zcw.cpbackend.model.entity.resume.ResumeContent;
+import com.zcw.cpbackend.model.dto.resume.ResumeContent;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;

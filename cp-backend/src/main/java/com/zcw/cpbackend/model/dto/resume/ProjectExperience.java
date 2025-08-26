@@ -1,36 +1,32 @@
-package com.zcw.cpbackend.model.entity.resume;
+package com.zcw.cpbackend.model.dto.resume;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
- * 教育经历实体类
+ * 项目经历实体类
  * 注意：此类作为JSON字段的一部分存储，不需要独立的数据库表和id字段
  *
  * @author zcw
  */
 @Data
-public class Education implements Serializable {
+public class ProjectExperience implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 学校名称
+     * 项目名称
      */
-    private String schoolName;
+    private String projectName;
 
     /**
-     * 专业
+     * 担任角色
      */
-    private String major;
-
-    /**
-     * 学历
-     */
-    private String degree;
+    private String role;
 
     /**
      * 开始日期
@@ -45,14 +41,24 @@ public class Education implements Serializable {
     private LocalDate endDate;
 
     /**
-     * 是否在读
+     * 项目链接
      */
-    private Boolean isCurrent;
+    private String projectUrl;
 
     /**
-     * 描述
+     * 使用技术
+     */
+    private List<String> technologies;
+
+    /**
+     * 项目描述
      */
     private String description;
+
+    /**
+     * 项目成果
+     */
+    private String achievements;
 
     /**
      * 排序

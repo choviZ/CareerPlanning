@@ -1,6 +1,5 @@
 package com.zcw.cpbackend.model.dto.resume;
 
-import com.zcw.cpbackend.model.entity.resume.ResumeContent;
 import lombok.Data;
 
 import java.io.Serializable;

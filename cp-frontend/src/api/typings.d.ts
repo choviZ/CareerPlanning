@@ -22,6 +22,14 @@ declare namespace API {
     compatibilityScore: number
   }
 
+  type adminDeleteResumeParams = {
+    id: number
+  }
+
+  type adminGetResumeByIdParams = {
+    id: number
+  }
+
   type AssessmentQuestionVo = {
     id?: number
     testType?: string
@@ -69,6 +77,12 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseListResumeTemplateVo = {
+    code?: number
+    data?: ResumeTemplateVo[]
+    message?: string
+  }
+
   type BaseResponseLong = {
     code?: number
     data?: number
@@ -93,6 +107,18 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponsePageResumeTemplateVo = {
+    code?: number
+    data?: PageResumeTemplateVo
+    message?: string
+  }
+
+  type BaseResponsePageResumeVo = {
+    code?: number
+    data?: PageResumeVo
+    message?: string
+  }
+
   type BaseResponsePageUser = {
     code?: number
     data?: PageUser
@@ -102,6 +128,24 @@ declare namespace API {
   type BaseResponseResultCareerMapping = {
     code?: number
     data?: ResultCareerMapping
+    message?: string
+  }
+
+  type BaseResponseResumeTemplateVo = {
+    code?: number
+    data?: ResumeTemplateVo
+    message?: string
+  }
+
+  type BaseResponseResumeVo = {
+    code?: number
+    data?: ResumeVo
+    message?: string
+  }
+
+  type BaseResponseString = {
+    code?: number
+    data?: string
     message?: string
   }
 
@@ -121,6 +165,18 @@ declare namespace API {
     code?: number
     data?: UserVO
     message?: string
+  }
+
+  type BasicInfo = {
+    name?: string
+    phone?: string
+    email?: string
+    avatar?: string
+    birthDate?: string
+    gender?: number
+    address?: string
+    jobIntention?: string
+    selfIntroduction?: string
   }
 
   type CareerAddRequest = {
@@ -164,6 +220,10 @@ declare namespace API {
     isDeleted?: boolean
   }
 
+  type copyResumeParams = {
+    id: number
+  }
+
   type deleteAssessmentResultParams = {
     id: number
   }
@@ -180,6 +240,10 @@ declare namespace API {
     id: number
   }
 
+  type deleteResumeParams = {
+    id: number
+  }
+
   type deleteUserParams = {
     id: number
   }
@@ -189,12 +253,35 @@ declare namespace API {
     userAnswers?: string[]
   }
 
+  type Education = {
+    schoolName?: string
+    major?: string
+    degree?: string
+    startDate?: string
+    endDate?: string
+    isCurrent?: boolean
+    description?: string
+    sortOrder?: number
+  }
+
+  type generateShareCodeParams = {
+    id: number
+  }
+
   type getAssessmentResultByIdParams = {
     id: number
   }
 
   type getCareerByIdParams = {
     id: number
+  }
+
+  type getResumeByIdParams = {
+    id: number
+  }
+
+  type getResumeByShareCodeParams = {
+    shareCode: string
   }
 
   type getUserByIdParams = {
@@ -234,6 +321,24 @@ declare namespace API {
     optimizeCountQuery?: boolean
   }
 
+  type PageResumeTemplateVo = {
+    records?: ResumeTemplateVo[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type PageResumeVo = {
+    records?: ResumeVo[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
   type PageUser = {
     records?: User[]
     pageNumber?: number
@@ -241,6 +346,22 @@ declare namespace API {
     totalPage?: number
     totalRow?: number
     optimizeCountQuery?: boolean
+  }
+
+  type ProjectExperience = {
+    projectName?: string
+    role?: string
+    startDate?: string
+    endDate?: string
+    projectUrl?: string
+    technologies?: string[]
+    description?: string
+    achievements?: string
+    sortOrder?: number
+  }
+
+  type publishResumeParams = {
+    id: number
   }
 
   type QueryAssessmentResultRequest = {
@@ -270,6 +391,10 @@ declare namespace API {
     testType: string
   }
 
+  type queryResumeTemplateByIdParams = {
+    id: number
+  }
+
   type ResultCareerMapping = {
     id?: number
     resultId?: number
@@ -281,6 +406,115 @@ declare namespace API {
     compatibilityScore?: number
     createdAt?: string
     isDeleted?: number
+  }
+
+  type ResumeAddRequest = {
+    title?: string
+    templateId?: number
+    content?: ResumeContent
+    status?: number
+    isPublic?: number
+  }
+
+  type ResumeContent = {
+    basicInfo?: BasicInfo
+    education?: Education[]
+    workExperience?: WorkExperience[]
+    projectExperience?: ProjectExperience[]
+    skills?: Skill[]
+  }
+
+  type ResumeQueryRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    title?: string
+    name?: string
+    jobIntention?: string
+    status?: number
+    isPublic?: number
+    templateId?: number
+    userId?: number
+  }
+
+  type ResumeTemplateAddRequest = {
+    templateName?: string
+    templateDesc?: string
+    previewUrl?: string
+    templateConfig?: object
+    defaultContent?: ResumeContent
+    templateType?: number
+    sortOrder?: number
+    isActive?: number
+  }
+
+  type ResumeTemplateQueryRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    templateName?: string
+    templateType?: number
+    isActive?: number
+  }
+
+  type ResumeTemplateUpdateRequest = {
+    id?: number
+    templateName?: string
+    templateDesc?: string
+    previewUrl?: string
+    templateConfig?: object
+    defaultContent?: ResumeContent
+    templateType?: number
+    sortOrder?: number
+    isActive?: number
+  }
+
+  type ResumeTemplateVo = {
+    id?: number
+    templateName?: string
+    templateDesc?: string
+    previewUrl?: string
+    templateConfig?: object
+    defaultContent?: ResumeContent
+    templateType?: number
+    sortOrder?: number
+    isActive?: number
+    createdAt?: string
+    updatedAt?: string
+  }
+
+  type ResumeUpdateRequest = {
+    id?: number
+    title?: string
+    templateId?: number
+    content?: ResumeContent
+    status?: number
+    isPublic?: number
+    versionRemark?: string
+  }
+
+  type ResumeVo = {
+    id?: number
+    userId?: number
+    title?: string
+    templateId?: number
+    content?: ResumeContent
+    name?: string
+    jobIntention?: string
+    status?: number
+    shareCode?: string
+    isPublic?: number
+    createdAt?: string
+    updatedAt?: string
+  }
+
+  type Skill = {
+    skillName?: string
+    skillLevel?: number
+    category?: string
+    sortOrder?: number
   }
 
   type UpdateAssessmentResultRequest = {
@@ -306,6 +540,11 @@ declare namespace API {
     assessmentResultId?: number
     careerId?: number
     compatibilityScore?: number
+  }
+
+  type updateTemplateStatusParams = {
+    id: number
+    status: number
   }
 
   type User = {
@@ -397,5 +636,16 @@ declare namespace API {
     userAvatar?: string
     userProfile?: string
     userRole?: string
+  }
+
+  type WorkExperience = {
+    companyName?: string
+    position?: string
+    startDate?: string
+    endDate?: string
+    isCurrent?: boolean
+    jobDescription?: string
+    achievements?: string
+    sortOrder?: number
   }
 }
