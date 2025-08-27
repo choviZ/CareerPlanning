@@ -151,18 +151,17 @@
 
 
     <!-- 预览弹窗 -->
-    <el-dialog v-model="previewVisible" title="模板预览" width="60%" :close-on-click-modal="false" draggable>
-      <div class="preview-container">
-        <ResumePreview
-          v-if="previewTemplate"
-          :resume-data="{
-            content: previewTemplate.defaultContent || {},
-            templateConfig: previewTemplate.templateConfig
-          }"
-          :template-config="previewTemplate.templateConfig"
-        />
-      </div>
-    </el-dialog>
+    <ResumePreviewDialog
+      v-model="previewVisible"
+      title="模板预览"
+      :resume-data="previewTemplate ? {
+        content: previewTemplate.defaultContent || {}
+      } : null"
+      :template-config="previewTemplate?.templateConfig"
+      :show-confirm-button="false"
+      cancel-text="关闭"
+      @cancel="closePreview"
+    />
   </div>
 </template>
 
@@ -177,7 +176,7 @@ import {
   deleteResumeTemplate,
   updateTemplateStatus
 } from '@/api/jianlimobanguanli'
-import ResumePreview from '@/components/ResumePreview.vue'
+import ResumePreviewDialog from '@/components/ResumePreviewDialog.vue'
 
 // 搜索参数
 const searchParams = ref<API.ResumeTemplateQueryRequest>({
@@ -223,7 +222,7 @@ const formRules = {
     { required: true, message: '请输入模板名称', trigger: 'blur' },
     { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
   ],
-  templateDesc: [
+  description: [
     { required: true, message: '请输入模板描述', trigger: 'blur' },
     { min: 5, max: 200, message: '长度在 5 到 200 个字符', trigger: 'blur' }
   ],
@@ -380,7 +379,7 @@ const handleEdit = (row: API.ResumeTemplateUpdateRequest) => {
     templateConfig: row.templateConfig || {},
     defaultContent: row.defaultContent || {},
     sortOrder: row.sortOrder || 0,
-    isActive: row.isActive || 0
+    isActive: row.isActive || 0,
   }
 
   // 将对象转换为JSON字符串显示
@@ -397,6 +396,14 @@ const handleEdit = (row: API.ResumeTemplateUpdateRequest) => {
 const handlePreview = (row: API.ResumeTemplateVo) => {
   previewTemplate.value = row
   previewVisible.value = true
+}
+
+/**
+ * 关闭预览
+ */
+const closePreview = () => {
+  previewVisible.value = false
+  previewTemplate.value = null
 }
 
 /**
@@ -477,7 +484,7 @@ const handleConfirm = async () => {
         templateConfig = JSON.parse(templateConfigStr.value)
       }
     } catch (error) {
-      ElMessage.error('模板配置JSON格式错误，请检查语法' + error)
+      ElMessage.error('模板配置JSON格式错误，请检查语法')
       return
     }
 
@@ -486,7 +493,7 @@ const handleConfirm = async () => {
         defaultContent = JSON.parse(defaultContentStr.value)
       }
     } catch (error) {
-      ElMessage.error('默认内容JSON格式错误，请检查语法' + error)
+      ElMessage.error('默认内容JSON格式错误，请检查语法')
       return
     }
 

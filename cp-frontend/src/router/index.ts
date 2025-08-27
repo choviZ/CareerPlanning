@@ -48,6 +48,11 @@ const router = createRouter({
       path: '/management/resume-template',
       name: 'ResumeTemplateManagement',
       component: () => import('@/views/management/ResumeTemplateManagement.vue')
+    },
+    {
+      path: '/resume/templates',
+      name: 'ResumeTemplateGallery',
+      component: () => import('@/views/resume/ResumeTemplateGallery.vue')
     }
   ]
 })

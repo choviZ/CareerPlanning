@@ -61,6 +61,7 @@ onMounted(() => {
 const menuItems = [
   { path: '/', label: '首页' },
   { path: '/assessment', label: '职业测评' },
+  { path: '/resume/templates', label: '简历模板' },
   { path: '/management/career', label: '职业管理' },
   { path: '/management/assessment-result', label: '评估结果管理' },
   { path: '/management/result-career-mapping', label: '测评结果映射' },
