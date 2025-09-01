@@ -6,6 +6,7 @@ import * as userController from './userController'
 import * as jianlimobanguanli from './jianlimobanguanli'
 import * as jianliguanli from './jianliguanli'
 import * as resultCareerMappingController from './resultCareerMappingController'
+import * as postController from './postController'
 import * as careerController from './careerController'
 import * as assessmentResultController from './assessmentResultController'
 import * as assessmentQuestionController from './assessmentQuestionController'
@@ -15,6 +16,7 @@ export default {
   jianlimobanguanli,
   jianliguanli,
   resultCareerMappingController,
+  postController,
   careerController,
   assessmentResultController,
   assessmentQuestionController,

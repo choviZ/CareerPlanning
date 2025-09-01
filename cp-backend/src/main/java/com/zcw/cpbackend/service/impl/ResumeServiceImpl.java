@@ -46,10 +46,6 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
         ResumeContent content = resumeAddRequest.getContent();
         Integer status = resumeAddRequest.getStatus();
         Integer isPublic = resumeAddRequest.getIsPublic();
-
-        if (StringUtils.isBlank(title)) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR, "简历标题不能为空");
-        }
         if (status == null || (status != 1 && status != 2 && status != 3)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "状态参数错误");
         }

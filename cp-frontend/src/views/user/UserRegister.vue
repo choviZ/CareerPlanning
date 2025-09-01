@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { userRegister } from '@/api/userController'
+import { userRegister } from '@/api/userController.ts'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import type { FormInstance, FormRules } from 'element-plus'

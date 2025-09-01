@@ -101,6 +101,12 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponsePagePostVO = {
+    code?: number
+    data?: PagePostVO
+    message?: string
+  }
+
   type BaseResponsePageResultCareerMapping = {
     code?: number
     data?: PageResultCareerMapping
@@ -122,6 +128,12 @@ declare namespace API {
   type BaseResponsePageUser = {
     code?: number
     data?: PageUser
+    message?: string
+  }
+
+  type BaseResponsePostVO = {
+    code?: number
+    data?: PostVO
     message?: string
   }
 
@@ -232,6 +244,10 @@ declare namespace API {
     id: number
   }
 
+  type deletePostParams = {
+    postId: number
+  }
+
   type deleteQuestionParams = {
     id: number
   }
@@ -276,6 +292,19 @@ declare namespace API {
     id: number
   }
 
+  type getLikeCountParams = {
+    postId: number
+  }
+
+  type getMyFavoritePostsParams = {
+    current?: number
+    pageSize?: number
+  }
+
+  type getPostByIdParams = {
+    postId: number
+  }
+
   type getResumeByIdParams = {
     id: number
   }
@@ -286,6 +315,31 @@ declare namespace API {
 
   type getUserByIdParams = {
     id: number
+  }
+
+  type getUserFavoritePostsParams = {
+    userId: number
+    current?: number
+    pageSize?: number
+  }
+
+  type getUserPostsByUserIdParams = {
+    userId: number
+    current?: number
+    pageSize?: number
+  }
+
+  type getUserPostsParams = {
+    current?: number
+    pageSize?: number
+  }
+
+  type hasFavoritedParams = {
+    postId: number
+  }
+
+  type hasLikedParams = {
+    postId: number
   }
 
   type OptionDTO = {
@@ -305,6 +359,15 @@ declare namespace API {
 
   type PageCareerVo = {
     records?: CareerVo[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type PagePostVO = {
+    records?: PostVO[]
     pageNumber?: number
     pageSize?: number
     totalPage?: number
@@ -346,6 +409,51 @@ declare namespace API {
     totalPage?: number
     totalRow?: number
     optimizeCountQuery?: boolean
+  }
+
+  type PostAddRequest = {
+    title: string
+    content: string
+    tags?: string
+  }
+
+  type PostEditRequest = {
+    id: number
+    title: string
+    content: string
+    tags?: string
+  }
+
+  type PostQueryRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    title?: string
+    content?: string
+    tags?: string
+    userId?: number
+    isEssence?: number
+    status?: number
+  }
+
+  type PostVO = {
+    id?: number
+    userId?: number
+    user?: UserVO
+    title?: string
+    content?: string
+    tagList?: string[]
+    viewCount?: number
+    likeCount?: number
+    commentCount?: number
+    isEssence?: number
+    status?: number
+    createdAt?: string
+    updatedAt?: string
+    lastCommentAt?: string
+    hasLiked?: boolean
+    hasFavorited?: boolean
   }
 
   type ProjectExperience = {
@@ -442,7 +550,7 @@ declare namespace API {
     templateName?: string
     templateDesc?: string
     previewUrl?: string
-    templateConfig?: object
+    templateConfig?: Record<string, any>
     defaultContent?: ResumeContent
     templateType?: number
     sortOrder?: number
@@ -464,11 +572,13 @@ declare namespace API {
     templateName?: string
     templateDesc?: string
     previewUrl?: string
-    templateConfig?: object
+    templateConfig?: Record<string, any>
     defaultContent?: ResumeContent
     templateType?: number
+    isFree?: number
+    price?: number
     sortOrder?: number
-    isActive?: number
+    status?: number
   }
 
   type ResumeTemplateVo = {
@@ -476,7 +586,7 @@ declare namespace API {
     templateName?: string
     templateDesc?: string
     previewUrl?: string
-    templateConfig?: object
+    templateConfig?: Record<string, any>
     defaultContent?: ResumeContent
     templateType?: number
     sortOrder?: number
@@ -515,6 +625,14 @@ declare namespace API {
     skillLevel?: number
     category?: string
     sortOrder?: number
+  }
+
+  type toggleFavoriteParams = {
+    postId: number
+  }
+
+  type toggleLikeParams = {
+    postId: number
   }
 
   type UpdateAssessmentResultRequest = {

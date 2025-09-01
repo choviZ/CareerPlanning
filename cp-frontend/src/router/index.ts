@@ -12,12 +12,12 @@ const router = createRouter({
     {
       path: '/user/login',
       name: 'UserLogin',
-      component: () => import('@/views/UserLogin.vue'),
+      component: () => import('@/views/user/UserLogin.vue'),
     },
     {
       path: '/user/register',
       name: 'UserRegister',
-      component: () => import('@/views/UserRegister.vue'),
+      component: () => import('@/views/user/UserRegister.vue'),
     },
     {
       path: '/assessment',
@@ -58,6 +58,11 @@ const router = createRouter({
       path: '/management/user',
       name: 'UserManagement',
       component: () => import('@/views/management/UserManagement.vue')
+    },
+    {
+      path: '/resume/edit',
+      name: 'ResumeEditor',
+      component: () => import('@/views/resume/ResumeEditor.vue')
     }
   ]
 })

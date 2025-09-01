@@ -24,10 +24,10 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { userLogin } from '@/api/userController'
+import { userLogin } from '@/api/userController.ts'
 import { ElMessage, type FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { useUserStore } from '@/stores/user.ts'
 
 // 登录信息
 const loginInfo = reactive<API.UserLoginRequest>({

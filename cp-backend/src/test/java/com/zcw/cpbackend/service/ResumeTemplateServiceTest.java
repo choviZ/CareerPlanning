@@ -45,10 +45,8 @@ public class ResumeTemplateServiceTest {
         addRequest.setTemplateConfig(templateConfig);
         addRequest.setDefaultContent(defaultContent);
         addRequest.setTemplateType(2); // 高级模板
-        addRequest.setIsFree(0); // 付费模板
-        addRequest.setPrice(2999); // 29.99元
         addRequest.setSortOrder(1);
-        addRequest.setStatus(1); // 启用状态
+        addRequest.setIsActive(1); // 启用状态
         // 4. 创建模板
         Long templateId = resumeTemplateService.addResumeTemplate(addRequest);
         // 5. 验证创建结果
