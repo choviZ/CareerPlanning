@@ -206,7 +206,7 @@ CREATE TABLE post
 ) COMMENT '帖子表';
 
 -- 用户点赞表（硬删除）
-CREATE TABLE forum_like
+CREATE TABLE post_like
 (
     id          BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '点赞ID',
     user_id     BIGINT  NOT NULL COMMENT '用户ID',
@@ -219,7 +219,7 @@ CREATE TABLE forum_like
 ) COMMENT '用户点赞表';
 
 -- 用户收藏表（硬删除）
-CREATE TABLE forum_favorite
+CREATE TABLE post_favorite
 (
     id         BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '收藏ID',
     user_id    BIGINT NOT NULL COMMENT '用户ID',

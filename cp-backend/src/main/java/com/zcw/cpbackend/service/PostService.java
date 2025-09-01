@@ -51,6 +51,15 @@ public interface PostService extends IService<Post> {
     Page<PostVO> queryPostPage(PostQueryRequest postQueryRequest);
 
     /**
+     * 分页查询帖子（支持传入当前用户ID）
+     *
+     * @param postQueryRequest 查询请求
+     * @param currentUserId 当前用户ID
+     * @return 帖子分页数据
+     */
+    Page<PostVO> queryPostPage(PostQueryRequest postQueryRequest, Long currentUserId);
+
+    /**
      * 根据ID获取帖子详情
      *
      * @param postId 帖子ID

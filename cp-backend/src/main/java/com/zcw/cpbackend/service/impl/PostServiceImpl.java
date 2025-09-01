@@ -16,11 +16,14 @@ import com.zcw.cpbackend.model.entity.User;
 import com.zcw.cpbackend.mapper.PostMapper;
 import com.zcw.cpbackend.model.vo.PostVO;
 import com.zcw.cpbackend.model.vo.UserVO;
+import com.zcw.cpbackend.service.PostFavoriteService;
+import com.zcw.cpbackend.service.PostLikeService;
 import com.zcw.cpbackend.service.PostService;
 import com.zcw.cpbackend.service.UserService;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +42,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Resource
     private UserService userService;
+
+    @Resource
+    @Lazy
+    private PostLikeService postLikeService;
+
+    @Resource
+    @Lazy
+    private PostFavoriteService postFavoriteService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -130,6 +141,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public Page<PostVO> queryPostPage(PostQueryRequest postQueryRequest) {
+        return queryPostPage(postQueryRequest, null);
+    }
+
+    /**
+     * 分页查询帖子（支持传入当前用户ID）
+     */
+    public Page<PostVO> queryPostPage(PostQueryRequest postQueryRequest, Long currentUserId) {
         int current = postQueryRequest.getCurrent();
         int pageSize = postQueryRequest.getPageSize();
         String sortField = postQueryRequest.getSortField();
@@ -187,7 +205,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
         Page<Post> postPage = this.page(Page.of(current, pageSize), queryWrapper);
 
         // 转换为VO
-        return convertToPostVOPage(postPage, null);
+        return convertToPostVOPage(postPage, currentUserId);
     }
 
     @Override
@@ -290,9 +308,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
             postVO.setUser(userVO);
         }
 
-        // TODO: 设置是否已点赞、是否已收藏（需要实现相关功能后补充）
-        postVO.setHasLiked(false);
-        postVO.setHasFavorited(false);
+        // 设置是否已点赞、是否已收藏
+        if (currentUserId != null) {
+            postVO.setHasLiked(postLikeService.hasLiked(currentUserId, 1, post.getId()));
+            postVO.setHasFavorited(postFavoriteService.hasFavorited(currentUserId, post.getId()));
+        } else {
+            postVO.setHasLiked(false);
+            postVO.setHasFavorited(false);
+        }
 
         return postVO;
     }
