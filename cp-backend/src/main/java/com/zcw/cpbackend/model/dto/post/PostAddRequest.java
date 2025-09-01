@@ -1,4 +1,4 @@
-package com.zcw.cpbackend.model.dto;
+package com.zcw.cpbackend.model.dto.post;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

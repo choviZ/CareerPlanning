@@ -2,9 +2,9 @@ package com.zcw.cpbackend.service;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
-import com.zcw.cpbackend.model.dto.PostAddRequest;
-import com.zcw.cpbackend.model.dto.PostEditRequest;
-import com.zcw.cpbackend.model.dto.PostQueryRequest;
+import com.zcw.cpbackend.model.dto.post.PostAddRequest;
+import com.zcw.cpbackend.model.dto.post.PostEditRequest;
+import com.zcw.cpbackend.model.dto.post.PostQueryRequest;
 import com.zcw.cpbackend.model.entity.Post;
 import com.zcw.cpbackend.model.vo.PostVO;
 

@@ -14,7 +14,7 @@ export async function generatePreviewImage(
   try {
     // 等待Vue组件完全渲染
     await nextTick()
-    
+
     // 默认配置
     const defaultOptions: Partial<html2canvas.Options> = {
       scale: 2, // 提高图片质量
@@ -25,7 +25,7 @@ export async function generatePreviewImage(
       height: 400, // 固定高度
       ...options
     }
-    
+
     const canvas = await html2canvas(element, defaultOptions)
     return canvas.toDataURL('image/png', 0.8)
   } catch (error) {
@@ -55,30 +55,30 @@ export async function generateResumePreviewImage(
       container.style.minHeight = '1000px' // 设置最小高度
       container.style.backgroundColor = '#ffffff'
       container.style.overflow = 'visible' // 允许内容溢出以获取完整高度
-      
+
       document.body.appendChild(container)
-      
+
       // 创建Vue应用实例来渲染ResumePreview组件
-      import('@/components/ResumePreview.vue').then(({ default: ResumePreview }) => {
+      import('@/components/resume/ResumePreview.vue').then(({ default: ResumePreview }) => {
         import('vue').then(({ createApp }) => {
           const app = createApp(ResumePreview, {
             resumeData: { content: resumeData },
             templateConfig: templateConfig
           })
-          
+
           app.mount(container)
-          
+
           // 等待组件渲染完成后生成图片
           setTimeout(async () => {
             try {
               // 获取实际渲染的内容高度
               const actualHeight = container.scrollHeight
               const actualWidth = container.scrollWidth
-              
+
               // 计算缩放比例，确保预览图片比例合适
               const targetWidth = 300
               const targetHeight = Math.min(400, (actualHeight / actualWidth) * targetWidth)
-              
+
               const imageData = await generatePreviewImage(container, {
                 width: actualWidth,
                 height: actualHeight,
@@ -87,11 +87,11 @@ export async function generateResumePreviewImage(
                 allowTaint: true,
                 backgroundColor: '#ffffff'
               })
-              
+
               // 清理临时元素
               app.unmount()
               document.body.removeChild(container)
-              
+
               resolve(imageData)
             } catch (error) {
               // 清理临时元素
@@ -114,14 +114,14 @@ export async function generateResumePreviewImage(
 class PreviewImageCache {
   private cache = new Map<string, string>()
   private maxSize = 50 // 最大缓存数量
-  
+
   /**
    * 生成缓存键
    */
   private generateKey(templateId: string | number, templateConfig: any): string {
     return `${templateId}_${JSON.stringify(templateConfig)}`
   }
-  
+
   /**
    * 获取缓存的预览图片
    */
@@ -129,22 +129,22 @@ class PreviewImageCache {
     const key = this.generateKey(templateId, templateConfig)
     return this.cache.get(key) || null
   }
-  
+
   /**
    * 设置缓存的预览图片
    */
   set(templateId: string | number, templateConfig: any, imageData: string): void {
     const key = this.generateKey(templateId, templateConfig)
-    
+
     // 如果缓存已满，删除最旧的条目
     if (this.cache.size >= this.maxSize) {
       const firstKey = this.cache.keys().next().value
       this.cache.delete(firstKey)
     }
-    
+
     this.cache.set(key, imageData)
   }
-  
+
   /**
    * 清空缓存
    */

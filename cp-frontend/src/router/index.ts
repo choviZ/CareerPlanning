@@ -63,6 +63,11 @@ const router = createRouter({
       path: '/resume/edit',
       name: 'ResumeEditor',
       component: () => import('@/views/resume/ResumeEditor.vue')
+    },
+    {
+      path: '/community',
+      name: 'Community',
+      component: () => import('@/views/community/CommunityPage.vue')
     }
   ]
 })

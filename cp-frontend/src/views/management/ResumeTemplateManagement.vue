@@ -176,7 +176,7 @@ import {
   deleteResumeTemplate,
   updateTemplateStatus
 } from '@/api/jianlimobanguanli'
-import ResumePreviewDialog from '@/components/ResumePreviewDialog.vue'
+import ResumePreviewDialog from '@/components/resume/ResumePreviewDialog.vue'
 
 // 搜索参数
 const searchParams = ref<API.ResumeTemplateQueryRequest>({
