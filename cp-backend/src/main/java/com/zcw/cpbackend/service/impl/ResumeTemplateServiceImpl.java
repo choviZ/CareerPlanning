@@ -117,7 +117,7 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
                 .defaultContent(resumeTemplateUpdateRequest.getDefaultContent())
                 .templateType(resumeTemplateUpdateRequest.getTemplateType())
                 .sortOrder(resumeTemplateUpdateRequest.getSortOrder())
-                .isActive(resumeTemplateUpdateRequest.getIsActive())
+                .isActive(resumeTemplateUpdateRequest.getStatus())
                 .updatedAt(LocalDateTime.now())
                 .build();
 
