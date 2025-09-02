@@ -1,5 +1,5 @@
 <template>
-  <el-card class="post-card" shadow="hover">
+  <el-card class="post-card" shadow="hover" @click="goToDetail">
     <!-- 用户信息头部 -->
     <div class="post-header">
       <div class="user-info">
@@ -47,7 +47,7 @@
         <el-button
           :type="post.hasLiked ? 'primary' : 'default'"
           size="small"
-          @click="handleLike"
+          @click.stop="handleLike"
           class="action-btn"
         >
           <svg class="icon" viewBox="0 0 1024 1024" width="16" height="16">
@@ -59,7 +59,7 @@
         <el-button
           type="default"
           size="small"
-          @click="handleComment"
+          @click.stop="handleComment"
           class="action-btn"
         >
           <svg class="icon" viewBox="0 0 1024 1024" width="16" height="16">
@@ -72,7 +72,7 @@
         <el-button
           :type="post.hasFavorited ? 'warning' : 'default'"
           size="small"
-          @click="handleFavorite"
+          @click.stop="handleFavorite"
           class="action-btn"
         >
           <svg class="icon" viewBox="0 0 1024 1024" width="16" height="16">
@@ -90,12 +90,14 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 
 interface Props {
   post: API.PostVO
 }
 
 const props = defineProps<Props>()
+const router = useRouter()
 
 // 格式化时间
 const formatTime = (time: string | undefined) => {
@@ -151,6 +153,11 @@ const emit = defineEmits<{
   favorite: [postId: number]
   comment: [postId: number]
 }>()
+
+// 跳转到帖子详情页
+const goToDetail = () => {
+  router.push(`/community/post/${props.post.id}`)
+}
 
 // 处理点赞
 const handleLike = () => {

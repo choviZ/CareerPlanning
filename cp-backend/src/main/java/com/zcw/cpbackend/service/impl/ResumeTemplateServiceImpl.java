@@ -228,12 +228,6 @@ public class ResumeTemplateServiceImpl extends ServiceImpl<ResumeTemplateMapper,
      * @param resumeTemplateQueryRequest 查询请求
      * @return 查询条件
      */
-    /**
-     * 构建查询条件
-     *
-     * @param resumeTemplateQueryRequest 查询请求
-     * @return 查询条件
-     */
     private QueryWrapper buildQueryWrapper(ResumeTemplateQueryRequest resumeTemplateQueryRequest) {
         QueryWrapper queryWrapper = QueryWrapper.create();
         String templateName = resumeTemplateQueryRequest.getTemplateName();

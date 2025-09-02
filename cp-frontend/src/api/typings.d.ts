@@ -77,6 +77,12 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseListCommentVO = {
+    code?: number
+    data?: CommentVO[]
+    message?: string
+  }
+
   type BaseResponseListResumeTemplateVo = {
     code?: number
     data?: ResumeTemplateVo[]
@@ -98,6 +104,12 @@ declare namespace API {
   type BaseResponsePageCareerVo = {
     code?: number
     data?: PageCareerVo
+    message?: string
+  }
+
+  type BaseResponsePageCommentVO = {
+    code?: number
+    data?: PageCommentVO
     message?: string
   }
 
@@ -232,6 +244,48 @@ declare namespace API {
     isDeleted?: boolean
   }
 
+  type CommentAddRequest = {
+    postId?: number
+    parentId?: number
+    replyToUserId?: number
+    content?: string
+  }
+
+  type CommentDeleteRequest = {
+    id?: number
+  }
+
+  type CommentQueryRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    postId?: number
+    parentId?: number
+    rootId?: number
+    userId?: number
+    content?: string
+    level?: number
+  }
+
+  type CommentVO = {
+    id?: number
+    postId?: number
+    userId?: number
+    user?: UserVO
+    parentId?: number
+    rootId?: number
+    replyToUserId?: number
+    replyToUser?: UserVO
+    content?: string
+    likeCount?: number
+    replyCount?: number
+    level?: number
+    path?: string
+    createdAt?: string
+    hasLiked?: boolean
+  }
+
   type copyResumeParams = {
     id: number
   }
@@ -292,6 +346,10 @@ declare namespace API {
     id: number
   }
 
+  type getCommentRepliesParams = {
+    commentId: number
+  }
+
   type getLikeCountParams = {
     postId: number
   }
@@ -302,6 +360,10 @@ declare namespace API {
   }
 
   type getPostByIdParams = {
+    postId: number
+  }
+
+  type getPostCommentsParams = {
     postId: number
   }
 
@@ -338,8 +400,16 @@ declare namespace API {
     postId: number
   }
 
+  type hasLikedCommentParams = {
+    commentId: number
+  }
+
   type hasLikedParams = {
     postId: number
+  }
+
+  type likeCommentParams = {
+    commentId: number
   }
 
   type OptionDTO = {
@@ -359,6 +429,15 @@ declare namespace API {
 
   type PageCareerVo = {
     records?: CareerVo[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type PageCommentVO = {
+    records?: CommentVO[]
     pageNumber?: number
     pageSize?: number
     totalPage?: number

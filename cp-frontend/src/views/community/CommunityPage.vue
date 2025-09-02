@@ -98,10 +98,10 @@ const publishPost = async () => {
 
   try {
     publishing.value = true
-    
+
     // 处理标签格式：使用选中的标签
     const tagsArray = selectedTags.value
-    
+
     const request: API.PostAddRequest = {
       title: postForm.content.substring(0, 50) || '无标题', // 使用内容前50字符作为标题
       content: postForm.content,
@@ -132,7 +132,7 @@ const publishPost = async () => {
 const loadPosts = async (reset = false) => {
   try {
     loading.value = true
-    
+
     if (reset) {
       pagination.value.current = 1
       posts.value = []
