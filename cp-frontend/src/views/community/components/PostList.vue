@@ -17,7 +17,7 @@
         :post="post"
         @like="$emit('like', $event)"
         @favorite="$emit('favorite', $event)"
-        @comment="$emit('comment', $event)"
+
         class="post-item"
       />
       
@@ -57,7 +57,6 @@ const props = withDefaults(defineProps<Props>(), {
 defineEmits<{
   like: [postId: number]
   favorite: [postId: number]
-  comment: [postId: number]
   'load-more': []
 }>()
 

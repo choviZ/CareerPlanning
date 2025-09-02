@@ -167,18 +167,114 @@
                 </svg>
                 {{ comment.likeCount || 0 }}
               </el-button>
-              <el-button text size="small" @click="replyToComment(comment)">
-                回复
+              <el-button
+                text
+                size="small"
+                @click="replyToComment(comment)"
+                :type="replyingTo === comment.id ? 'primary' : 'default'"
+              >
+                {{ replyingTo === comment.id ? '取消回复' : '回复' }}
               </el-button>
+            </div>
+
+            <!-- 回复输入框 -->
+            <div v-if="replyingTo === comment.id" class="reply-input-section">
+              <el-avatar :size="24" class="reply-avatar" />
+              <div class="reply-input-wrapper">
+                <el-input
+                  v-model="replyContent"
+                  type="textarea"
+                  :rows="2"
+                  :placeholder="`回复 ${comment.user?.userName}:`"
+                  class="reply-input"
+                />
+                <div class="reply-actions">
+                  <el-button size="small" @click="cancelReply">取消</el-button>
+                  <el-button
+                    type="primary"
+                    size="small"
+                    @click="submitReply(comment.id!)"
+                    :disabled="!replyContent.trim()"
+                  >
+                    回复
+                  </el-button>
+                </div>
+              </div>
             </div>
 
             <!-- 回复列表 -->
             <div v-if="comment.replyCount && comment.replyCount > 0" class="replies-list">
-              <div class="reply-placeholder">
+              <!-- 未加载回复时显示查看按钮 -->
+              <div v-if="!(comment as any).showReplies" class="reply-placeholder">
                 <span class="reply-count">{{ comment.replyCount }}条回复</span>
                 <el-button text size="small" @click="loadReplies(comment.id)">
                   查看回复
                 </el-button>
+              </div>
+              
+              <!-- 已加载回复时显示回复列表 -->
+              <div v-else class="replies-container">
+                <div class="replies-header">
+                  <span class="reply-count">{{ comment.replyCount }}条回复</span>
+                  <el-button text size="small" @click="(comment as any).showReplies = false">
+                    收起回复
+                  </el-button>
+                </div>
+                
+                <div class="reply-item" v-for="reply in (comment as any).replies" :key="reply.id">
+                   <el-avatar :size="32" :src="reply.user?.userAvatar" class="reply-avatar" />
+                   <div class="reply-content">
+                     <div class="reply-header">
+                       <span class="reply-username">{{ reply.user?.userName }}</span>
+                       <span v-if="reply.replyToUser" class="reply-to">
+                         回复 @{{ reply.replyToUser.userName }}
+                       </span>
+                       <span class="reply-time">{{ formatTime(reply.createdAt) }}</span>
+                     </div>
+                     <div class="reply-text">{{ reply.content }}</div>
+                     <div class="reply-actions">
+                       <el-button
+                         text
+                         size="small"
+                         @click="likeComment(reply)"
+                         :class="{ 'liked': reply.hasLiked }"
+                       >
+                         <svg class="icon" viewBox="0 0 1024 1024" width="14" height="14">
+                           <path d="M885.9 533.7c16.8-22.2 26.1-49.4 26.1-77.7 0-44.9-25.1-87.4-65.5-111.1a67.67 67.67 0 0 0-34.3-9.3H572.4l6-122.9c1.4-29.7-9.1-57.9-29.5-79.4A106.62 106.62 0 0 0 471 99.9c-52 0-98 35-111.8 85.1l-85.9 311H144c-17.7 0-32 14.3-32 32v364c0 17.7 14.3 32 32 32h601.3c9.2 0 18.2-1.8 26.8-5.4 99.3-41.3 180.7-131 180.7-235.1 0-52.7-19.7-101.9-55.9-139.5z" fill="currentColor"/>
+                         </svg>
+                         {{ reply.likeCount || 0 }}
+                       </el-button>
+                       <el-button text size="small" @click="replyToComment(reply)">
+                         {{ replyingTo === reply.id ? '取消回复' : '回复' }}
+                       </el-button>
+                     </div>
+                     
+                     <!-- 子评论的回复输入框 -->
+                      <div v-if="replyingTo === reply.id" class="reply-input-section">
+                        <el-avatar :size="24" class="reply-avatar" />
+                        <div class="reply-input-wrapper">
+                          <el-input
+                            v-model="replyContent"
+                            type="textarea"
+                            :rows="2"
+                            :placeholder="`回复 ${reply.user?.userName}:`"
+                            class="reply-input"
+                          />
+                          <div class="reply-actions">
+                            <el-button size="small" @click="cancelReply">取消</el-button>
+                            <el-button
+                              type="primary"
+                              size="small"
+                              @click="submitReply(comment.id!, reply.id, reply.user?.id)"
+                              :disabled="!replyContent.trim()"
+                            >
+                              回复
+                            </el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -212,6 +308,10 @@ const loading = ref(false)
 const comments = ref<API.CommentVO[]>([])
 const newComment = ref('')
 const sortType = ref<'hot' | 'latest' | 'floor'>('hot')
+
+// 回复相关状态
+const replyingTo = ref<number | null>(null)
+const replyContent = ref('')
 
 // 获取帖子详情
 const loadPostDetail = async () => {
@@ -385,9 +485,11 @@ const likeComment = async (comment: API.CommentVO) => {
     const response = await likeCommentApi({ commentId: comment.id })
 
     if (response.data?.code === 200) {
-      // 重新加载评论列表以获取最新状态
-      await loadComments()
-      ElMessage.success(comment.hasLiked ? '取消点赞' : '点赞成功')
+      // 更新本地状态
+      comment.hasLiked = !comment.hasLiked
+      comment.likeCount = (comment.likeCount || 0) + (comment.hasLiked ? 1 : -1)
+      
+      ElMessage.success(comment.hasLiked ? '点赞成功' : '取消点赞')
     } else {
       ElMessage.error(response.data?.message || '操作失败')
     }
@@ -399,8 +501,57 @@ const likeComment = async (comment: API.CommentVO) => {
 
 // 回复评论
 const replyToComment = (comment: API.CommentVO) => {
-  // TODO: 实现回复功能
-  ElMessage.info('回复功能开发中')
+  if (replyingTo.value === comment.id) {
+    // 如果已经在回复这条评论，则取消回复
+    replyingTo.value = null
+    replyContent.value = ''
+  } else {
+    // 开始回复这条评论
+    replyingTo.value = comment.id || null
+    replyContent.value = ''
+  }
+}
+
+// 提交回复
+const submitReply = async (parentCommentId: number, replyToCommentId?: number, replyToUserId?: number) => {
+  if (!replyContent.value.trim()) {
+    ElMessage.warning('请输入回复内容')
+    return
+  }
+
+  try {
+    const requestData: any = {
+      content: replyContent.value,
+      postId: parseInt(postId),
+      parentId: parentCommentId
+    }
+
+    // 如果是回复子评论，添加 replyToUserId
+    if (replyToCommentId && replyToUserId) {
+      requestData.replyToUserId = replyToUserId
+    }
+
+    const response = await addComment(requestData)
+
+    if (response.data?.code === 200) {
+      replyContent.value = ''
+      replyingTo.value = null
+      ElMessage.success('回复发表成功')
+      // 重新加载评论列表
+      await loadComments()
+    } else {
+      ElMessage.error(response.data?.message || '回复发表失败')
+    }
+  } catch (error) {
+    console.error('回复发表失败:', error)
+    ElMessage.error('回复发表失败')
+  }
+}
+
+// 取消回复
+const cancelReply = () => {
+  replyingTo.value = null
+  replyContent.value = ''
 }
 
 // 加载回复
@@ -410,9 +561,14 @@ const loadReplies = async (commentId: number | undefined) => {
   try {
     const response = await getCommentReplies({ commentId })
     if (response.data?.data) {
-      // TODO: 处理回复数据的显示逻辑
-      console.log('回复数据:', response.data.data)
-      ElMessage.success('回复加载成功')
+      // 找到对应的评论并添加回复数据
+      const targetComment = comments.value.find(comment => comment.id === commentId)
+      if (targetComment) {
+        // 为评论对象动态添加 replies 字段
+        ;(targetComment as any).replies = response.data.data
+        ;(targetComment as any).showReplies = true
+        ElMessage.success(`加载了 ${response.data.data.length} 条回复`)
+      }
     }
   } catch (error) {
     console.error('加载回复失败:', error)
@@ -656,6 +812,140 @@ onMounted(() => {
 
 .comment-actions .icon {
   margin-right: 4px;
+}
+
+/* 回复列表 */
+.replies-list {
+  margin-top: 12px;
+  border-left: 2px solid #e9ecef;
+  padding-left: 16px;
+}
+
+.reply-placeholder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  color: #666;
+  font-size: 13px;
+}
+
+.replies-container {
+  margin-top: 8px;
+}
+
+.replies-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  color: #666;
+  font-size: 13px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 12px;
+}
+
+.reply-item {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 8px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.reply-avatar {
+  flex-shrink: 0;
+}
+
+.reply-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.reply-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.reply-username {
+  font-weight: 500;
+  color: #333;
+  font-size: 13px;
+}
+
+.reply-to {
+  color: #409eff;
+  font-size: 12px;
+}
+
+.reply-time {
+  color: #999;
+  font-size: 11px;
+  margin-left: auto;
+}
+
+.reply-text {
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.reply-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.reply-actions .el-button {
+  color: #666;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+.reply-actions .el-button.liked {
+  color: #409eff;
+}
+
+.reply-actions .icon {
+  margin-right: 3px;
+}
+
+/* 回复输入框 */
+.reply-input-section {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.reply-avatar {
+  flex-shrink: 0;
+}
+
+.reply-input-wrapper {
+  flex: 1;
+}
+
+.reply-input {
+  margin-bottom: 8px;
+}
+
+.reply-input .el-textarea__inner {
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.reply-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 /* 回复列表 */

@@ -45,7 +45,6 @@
           :loading="loading"
           @like="handleLike"
           @favorite="handleFavorite"
-          @comment="handleComment"
           @load-more="loadMorePosts"
         />
       </el-tab-pane>
@@ -55,7 +54,6 @@
           :loading="loading"
           @like="handleLike"
           @favorite="handleFavorite"
-          @comment="handleComment"
           @load-more="loadMorePosts"
         />
       </el-tab-pane>
@@ -229,10 +227,7 @@ const handleFavorite = async (postId: number) => {
   }
 }
 
-// 评论处理（暂时只是提示）
-const handleComment = (postId: number) => {
-  ElMessage.info('评论功能开发中...')
-}
+
 
 // 页面加载时获取帖子列表
 onMounted(() => {
