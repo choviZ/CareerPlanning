@@ -1,0 +1,59 @@
+package com.zcw.cpbackend.model.dto.learningresource;
+
+import lombok.Data;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+/**
+ * 学习资源添加请求
+ *
+ * @author zcw
+ */
+@Data
+public class LearningResourceAddRequest implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 资源标题
+     */
+    private String title;
+
+    /**
+     * 文本内容
+     */
+    private String content;
+
+    /**
+     * 资源摘要
+     */
+    private String summary;
+
+    /**
+     * 资源类型：1-技术文档，2-行业动态
+     */
+    private Integer resourceType;
+
+    /**
+     * 内容类型：1-markdown
+     */
+    private Integer contentType;
+
+    /**
+     * 分类名称
+     */
+    private String category;
+
+    /**
+     * 封面图片URL
+     */
+    private String coverImage;
+
+    /**
+     * 是否置顶：0-否，1-是
+     */
+    private Integer isTop;
+
+}

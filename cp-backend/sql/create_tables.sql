@@ -229,7 +229,7 @@ CREATE TABLE post_favorite
     INDEX idx_user_created (user_id, created_at)
 ) COMMENT '用户收藏表';
 
--- 3. 评论表（支持层级关系）
+-- 评论表（支持层级关系）
 CREATE TABLE comment
 (
     id               BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '评论ID',
@@ -244,7 +244,7 @@ CREATE TABLE comment
     level            INT      DEFAULT 1 COMMENT '评论层级：1-顶级评论，2-二级评论，以此类推',
     path             VARCHAR(1000) COMMENT '评论路径，如：1/23/456，便于查询评论树',
     created_at       DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    is_deleted      TINYINT  DEFAULT 0 COMMENT '是否删除（0-否，1-是）',
+    is_deleted       TINYINT  DEFAULT 0 COMMENT '是否删除（0-否，1-是）',
     INDEX idx_post_status_created (post_id, is_deleted, created_at),
     INDEX idx_parent_status (parent_id, is_deleted),
     INDEX idx_root_status (root_id, is_deleted),
@@ -252,3 +252,22 @@ CREATE TABLE comment
     INDEX idx_path (path),
     FULLTEXT INDEX ft_content (content)
 ) COMMENT '评论表';
+
+-- 学习资源表
+CREATE TABLE learning_resource
+(
+    id            BIGINT PRIMARY KEY COMMENT '资源ID',
+    title         VARCHAR(255) NOT NULL COMMENT '资源标题',
+    content       LONGTEXT COMMENT '文本内容',
+    summary       VARCHAR(500) COMMENT '资源摘要',
+    resource_type TINYINT      NOT NULL COMMENT '资源类型：1-技术文档，2-行业动态',
+    content_type  TINYINT      NOT NULL COMMENT '内容类型：1-markdown',
+    category      VARCHAR(128) COMMENT '分类ID',
+    cover_image   VARCHAR(500) COMMENT '封面图片URL',
+    author_id     BIGINT COMMENT '发布者ID',
+    view_count    INT      DEFAULT 0 COMMENT '浏览次数',
+    is_top        TINYINT  DEFAULT 0 COMMENT '是否置顶：0-否，1-是',
+    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    is_deleted    TINYINT  DEFAULT 0 COMMENT '是否删除：0-否，1-是'
+);
