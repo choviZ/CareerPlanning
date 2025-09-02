@@ -83,6 +83,16 @@ const router = createRouter({
       path: '/community/post/:id',
       name: 'PostDetail',
       component: () => import('@/views/community/PostDetail.vue')
+    },
+    {
+      path: '/learning',
+      name: 'LearningResource',
+      component: () => import('@/views/learning/LearningResourcePage.vue')
+    },
+    {
+      path: '/learning/:id',
+      name: 'LearningResourceDetail',
+      component: () => import('@/views/learning/LearningResourceDetail.vue')
     }
   ]
 })

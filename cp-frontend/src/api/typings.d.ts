@@ -71,6 +71,12 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseLearningResourceVO = {
+    code?: number
+    data?: LearningResourceVO
+    message?: string
+  }
+
   type BaseResponseListAssessmentQuestionVo = {
     code?: number
     data?: AssessmentQuestionVo[]
@@ -110,6 +116,12 @@ declare namespace API {
   type BaseResponsePageCommentVO = {
     code?: number
     data?: PageCommentVO
+    message?: string
+  }
+
+  type BaseResponsePageLearningResourceVO = {
+    code?: number
+    data?: PageLearningResourceVO
     message?: string
   }
 
@@ -298,6 +310,10 @@ declare namespace API {
     id: number
   }
 
+  type deleteLearningResourceParams = {
+    resourceId: number
+  }
+
   type deletePostParams = {
     postId: number
   }
@@ -348,6 +364,16 @@ declare namespace API {
 
   type getCommentRepliesParams = {
     commentId: number
+  }
+
+  type getLearningResourceByIdParams = {
+    resourceId: number
+  }
+
+  type getLearningResourcesByCategoryParams = {
+    category: string
+    current?: number
+    pageSize?: number
   }
 
   type getLikeCountParams = {
@@ -408,6 +434,63 @@ declare namespace API {
     postId: number
   }
 
+  type LearningResourceAddRequest = {
+    title?: string
+    content?: string
+    summary?: string
+    resourceType?: number
+    contentType?: number
+    category?: string
+    coverImage?: string
+    isTop?: number
+  }
+
+  type LearningResourceEditRequest = {
+    id?: number
+    title?: string
+    content?: string
+    summary?: string
+    resourceType?: number
+    contentType?: number
+    category?: string
+    coverImage?: string
+    isTop?: number
+  }
+
+  type LearningResourceQueryRequest = {
+    current?: number
+    pageSize?: number
+    sortField?: string
+    sortOrder?: string
+    title?: string
+    summary?: string
+    resourceType?: number
+    contentType?: number
+    category?: string
+    authorId?: number
+    isTop?: number
+    keyword?: string
+  }
+
+  type LearningResourceVO = {
+    id?: number
+    title?: string
+    content?: string
+    summary?: string
+    resourceType?: number
+    resourceTypeName?: string
+    contentType?: number
+    contentTypeName?: string
+    category?: string
+    coverImage?: string
+    authorId?: number
+    author?: UserVO
+    viewCount?: number
+    isTop?: number
+    createdAt?: string
+    updatedAt?: string
+  }
+
   type likeCommentParams = {
     commentId: number
   }
@@ -438,6 +521,15 @@ declare namespace API {
 
   type PageCommentVO = {
     records?: CommentVO[]
+    pageNumber?: number
+    pageSize?: number
+    totalPage?: number
+    totalRow?: number
+    optimizeCountQuery?: boolean
+  }
+
+  type PageLearningResourceVO = {
+    records?: LearningResourceVO[]
     pageNumber?: number
     pageSize?: number
     totalPage?: number
@@ -699,6 +791,12 @@ declare namespace API {
     updatedAt?: string
   }
 
+  type searchLearningResourcesParams = {
+    keyword: string
+    current?: number
+    pageSize?: number
+  }
+
   type Skill = {
     skillName?: string
     skillLevel?: number
@@ -716,6 +814,10 @@ declare namespace API {
 
   type toggleLikeParams = {
     postId: number
+  }
+
+  type toggleTopStatusParams = {
+    resourceId: number
   }
 
   type UpdateAssessmentResultRequest = {

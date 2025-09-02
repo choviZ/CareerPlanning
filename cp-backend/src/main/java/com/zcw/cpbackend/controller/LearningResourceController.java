@@ -71,14 +71,25 @@ public class LearningResourceController {
     /**
      * 删除学习资源
      *
-     * @param resourceId 学习资源ID
+     * @param resourceIdStr 学习资源ID字符串
      * @return 是否成功
      */
     @PostMapping("/delete/{resourceId}")
     @SaCheckLogin
     @Operation(summary = "删除学习资源")
-    public BaseResponse<Boolean> deleteLearningResource(@PathVariable Long resourceId) {
-        ThrowUtils.throwIf(resourceId == null || resourceId <= 0, ErrorCode.PARAMS_ERROR);
+    public BaseResponse<Boolean> deleteLearningResource(@PathVariable("resourceId") String resourceIdStr) {
+        // 参数验证和转换
+        Long resourceId;
+        try {
+            ThrowUtils.throwIf(resourceIdStr == null || resourceIdStr.trim().isEmpty() || "undefined".equals(resourceIdStr), 
+                    ErrorCode.PARAMS_ERROR, "学习资源ID不能为空");
+            resourceId = Long.parseLong(resourceIdStr);
+            ThrowUtils.throwIf(resourceId <= 0, ErrorCode.PARAMS_ERROR, "学习资源ID必须为正数");
+        } catch (NumberFormatException e) {
+            ThrowUtils.throwIf(true, ErrorCode.PARAMS_ERROR, "学习资源ID格式不正确");
+            return null; // 这行不会执行，但为了编译通过
+        }
+        
         Long userId = StpUtil.getLoginIdAsLong();
         Boolean result = learningResourceService.deleteLearningResource(resourceId, userId);
         return ResultUtils.success(result);
@@ -101,13 +112,24 @@ public class LearningResourceController {
     /**
      * 根据ID获取学习资源详情
      *
-     * @param resourceId 学习资源ID
+     * @param resourceIdStr 学习资源ID字符串
      * @return 学习资源详情
      */
     @GetMapping("/get/{resourceId}")
     @Operation(summary = "获取学习资源详情")
-    public BaseResponse<LearningResourceVO> getLearningResourceById(@PathVariable Long resourceId) {
-        ThrowUtils.throwIf(resourceId == null || resourceId <= 0, ErrorCode.PARAMS_ERROR);
+    public BaseResponse<LearningResourceVO> getLearningResourceById(@PathVariable("resourceId") String resourceIdStr) {
+        // 参数验证和转换
+        Long resourceId;
+        try {
+            ThrowUtils.throwIf(resourceIdStr == null || resourceIdStr.trim().isEmpty() || "undefined".equals(resourceIdStr), 
+                    ErrorCode.PARAMS_ERROR, "学习资源ID不能为空");
+            resourceId = Long.parseLong(resourceIdStr);
+            ThrowUtils.throwIf(resourceId <= 0, ErrorCode.PARAMS_ERROR, "学习资源ID必须为正数");
+        } catch (NumberFormatException e) {
+            ThrowUtils.throwIf(true, ErrorCode.PARAMS_ERROR, "学习资源ID格式不正确");
+            return null; // 这行不会执行，但为了编译通过
+        }
+        
         LearningResourceVO resourceVO = learningResourceService.getLearningResourceById(resourceId);
         // 增加浏览量
         learningResourceService.incrementViewCount(resourceId);
@@ -117,14 +139,25 @@ public class LearningResourceController {
     /**
      * 切换学习资源置顶状态（仅管理员）
      *
-     * @param resourceId 学习资源ID
+     * @param resourceIdStr 学习资源ID字符串
      * @return 是否成功
      */
     @PostMapping("/top/{resourceId}")
     @SaCheckRole(UserRoleConstance.ADMIN)
     @Operation(summary = "切换学习资源置顶状态")
-    public BaseResponse<Boolean> toggleTopStatus(@PathVariable Long resourceId) {
-        ThrowUtils.throwIf(resourceId == null || resourceId <= 0, ErrorCode.PARAMS_ERROR);
+    public BaseResponse<Boolean> toggleTopStatus(@PathVariable("resourceId") String resourceIdStr) {
+        // 参数验证和转换
+        Long resourceId;
+        try {
+            ThrowUtils.throwIf(resourceIdStr == null || resourceIdStr.trim().isEmpty() || "undefined".equals(resourceIdStr), 
+                    ErrorCode.PARAMS_ERROR, "学习资源ID不能为空");
+            resourceId = Long.parseLong(resourceIdStr);
+            ThrowUtils.throwIf(resourceId <= 0, ErrorCode.PARAMS_ERROR, "学习资源ID必须为正数");
+        } catch (NumberFormatException e) {
+            ThrowUtils.throwIf(true, ErrorCode.PARAMS_ERROR, "学习资源ID格式不正确");
+            return null; // 这行不会执行，但为了编译通过
+        }
+        
         Boolean result = learningResourceService.toggleTop(resourceId);
         return ResultUtils.success(result);
     }

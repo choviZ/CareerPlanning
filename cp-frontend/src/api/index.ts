@@ -7,6 +7,7 @@ import * as jianlimobanguanli from './jianlimobanguanli'
 import * as jianliguanli from './jianliguanli'
 import * as resultCareerMappingController from './resultCareerMappingController'
 import * as postController from './postController'
+import * as xuexiziyuanguanli from './xuexiziyuanguanli'
 import * as commentController from './commentController'
 import * as careerController from './careerController'
 import * as assessmentResultController from './assessmentResultController'
@@ -18,6 +19,7 @@ export default {
   jianliguanli,
   resultCareerMappingController,
   postController,
+  xuexiziyuanguanli,
   commentController,
   careerController,
   assessmentResultController,
