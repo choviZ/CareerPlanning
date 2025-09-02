@@ -1,7 +1,9 @@
 package com.zcw.cpbackend.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.stp.StpUtil;
+import com.zcw.cpbackend.constance.UserRoleConstance;
 import com.mybatisflex.core.paginate.Page;
 import com.zcw.cpbackend.common.BaseResponse;
 import com.zcw.cpbackend.common.ResultUtils;
@@ -231,5 +233,16 @@ public class PostController {
             @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Page<PostVO> favoritePage = postFavoriteService.getUserFavoritePosts(userId, current, pageSize);
         return ResultUtils.success(favoritePage);
+    }
+
+    /**
+     * 切换帖子精选状态
+     */
+    @PostMapping("/essence/{postId}")
+    @Operation(summary = "切换帖子精选状态")
+    @SaCheckRole(UserRoleConstance.ADMIN)
+    public BaseResponse<Boolean> toggleEssence(@PathVariable Long postId) {
+        Boolean result = postService.toggleEssence(postId);
+        return ResultUtils.success(result);
     }
 }

@@ -318,4 +318,28 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
         return postVO;
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean toggleEssence(Long postId) {
+        ThrowUtils.throwIf(postId == null || postId <= 0, ErrorCode.PARAMS_ERROR, "帖子ID不能为空");
+
+        // 查询帖子
+        Post post = this.getById(postId);
+        ThrowUtils.throwIf(post == null, ErrorCode.NOT_FOUND_ERROR, "帖子不存在");
+        ThrowUtils.throwIf(post.getIsDeleted() == 1, ErrorCode.NOT_FOUND_ERROR, "帖子已删除");
+
+        // 切换精选状态
+        Integer newEssenceStatus = post.getIsEssence() == 1 ? 0 : 1;
+        
+        Post updatePost = new Post();
+        updatePost.setId(postId);
+        updatePost.setIsEssence(newEssenceStatus);
+        updatePost.setUpdatedAt(LocalDateTime.now());
+
+        boolean result = this.updateById(updatePost);
+        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "切换精选状态失败");
+        
+        return newEssenceStatus == 1;
+    }
 }

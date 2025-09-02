@@ -40,6 +40,20 @@ export async function editPost(body: API.PostEditRequest, options?: { [key: stri
   })
 }
 
+/** 切换帖子精选状态 POST /post/essence/${param0} */
+export async function toggleEssence(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.toggleEssenceParams,
+  options?: { [key: string]: any }
+) {
+  const { postId: param0, ...queryParams } = params
+  return request<API.BaseResponseBoolean>(`/post/essence/${param0}`, {
+    method: 'POST',
+    params: { ...queryParams },
+    ...(options || {}),
+  })
+}
+
 /** 收藏/取消收藏帖子 POST /post/favorite/${param0} */
 export async function toggleFavorite(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)

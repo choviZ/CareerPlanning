@@ -93,4 +93,12 @@ public interface PostService extends IService<Post> {
      * @param commentCount 评论数变化
      */
     void updatePostStats(Long postId, Integer likeCount, Integer commentCount);
+
+    /**
+     * 切换帖子精选状态
+     *
+     * @param postId 帖子ID
+     * @return 切换后的精选状态（true-精选，false-非精选）
+     */
+    Boolean toggleEssence(Long postId);
 }

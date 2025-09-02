@@ -65,6 +65,11 @@ const router = createRouter({
       component: () => import('@/views/management/CommentManagement.vue')
     },
     {
+      path: '/management/post',
+      name: 'PostManagement',
+      component: () => import('@/views/management/PostManagement.vue')
+    },
+    {
       path: '/resume/edit',
       name: 'ResumeEditor',
       component: () => import('@/views/resume/ResumeEditor.vue')

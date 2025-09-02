@@ -706,6 +706,10 @@ declare namespace API {
     sortOrder?: number
   }
 
+  type toggleEssenceParams = {
+    postId: number
+  }
+
   type toggleFavoriteParams = {
     postId: number
   }
