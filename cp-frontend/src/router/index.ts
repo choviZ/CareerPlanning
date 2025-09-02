@@ -60,6 +60,11 @@ const router = createRouter({
       component: () => import('@/views/management/UserManagement.vue')
     },
     {
+      path: '/management/comment',
+      name: 'CommentManagement',
+      component: () => import('@/views/management/CommentManagement.vue')
+    },
+    {
       path: '/resume/edit',
       name: 'ResumeEditor',
       component: () => import('@/views/resume/ResumeEditor.vue')
