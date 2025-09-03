@@ -93,6 +93,11 @@ const router = createRouter({
       path: '/learning/:id',
       name: 'LearningResourceDetail',
       component: () => import('@/views/learning/LearningResourceDetail.vue')
+    },
+    {
+      path: '/analytics',
+      name: 'Analytics',
+      component: () => import('@/views/analytics/AnalyticsPage.vue')
     }
   ]
 })

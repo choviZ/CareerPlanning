@@ -13,6 +13,7 @@ import * as careerController from './careerController'
 import * as assessmentResultController from './assessmentResultController'
 import * as assessmentQuestionController from './assessmentQuestionController'
 import * as healthController from './healthController'
+import * as analyseController from './analyseController'
 export default {
   userController,
   jianlimobanguanli,
@@ -25,4 +26,5 @@ export default {
   assessmentResultController,
   assessmentQuestionController,
   healthController,
+  analyseController,
 }

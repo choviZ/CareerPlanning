@@ -63,6 +63,7 @@ const menuItems = [
   { path: '/assessment', label: '职业测评' },
   { path: '/resume/templates', label: '简历模板' },
   { path: '/learning', label: '学习资源' },
+  { path: '/analytics', label: '数据统计' },
   { path: '/community', label: '交流' },
   { path: '/management/user', label: '用户管理' },
   { path: '/management/career', label: '职业管理' },

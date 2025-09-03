@@ -89,6 +89,12 @@ declare namespace API {
     message?: string
   }
 
+  type BaseResponseListResourceTypeDistributionDTO = {
+    code?: number
+    data?: ResourceTypeDistributionDTO[]
+    message?: string
+  }
+
   type BaseResponseListResumeTemplateVo = {
     code?: number
     data?: ResumeTemplateVo[]
@@ -158,6 +164,12 @@ declare namespace API {
   type BaseResponsePostVO = {
     code?: number
     data?: PostVO
+    message?: string
+  }
+
+  type BaseResponseResourceOverviewDTO = {
+    code?: number
+    data?: ResourceOverviewDTO
     message?: string
   }
 
@@ -311,7 +323,7 @@ declare namespace API {
   }
 
   type deleteLearningResourceParams = {
-    resourceId: number
+    resourceId: string
   }
 
   type deletePostParams = {
@@ -367,7 +379,7 @@ declare namespace API {
   }
 
   type getLearningResourceByIdParams = {
-    resourceId: number
+    resourceId: string
   }
 
   type getLearningResourcesByCategoryParams = {
@@ -674,6 +686,24 @@ declare namespace API {
     id: number
   }
 
+  type ResourceOverviewDTO = {
+    totalResources?: number
+    validResources?: number
+    deletedResources?: number
+    avgViewCount?: number
+    totalViewCount?: number
+  }
+
+  type ResourceTypeDistributionDTO = {
+    resourceType?: number
+    typeName?: string
+    typeCount?: number
+    typeRatio?: number
+    avgView?: number
+    totalView?: number
+    topCount?: number
+  }
+
   type ResultCareerMapping = {
     id?: number
     resultId?: number
@@ -817,7 +847,7 @@ declare namespace API {
   }
 
   type toggleTopStatusParams = {
-    resourceId: number
+    resourceId: string
   }
 
   type UpdateAssessmentResultRequest = {
