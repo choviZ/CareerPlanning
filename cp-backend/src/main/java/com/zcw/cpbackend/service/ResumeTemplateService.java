@@ -5,7 +5,7 @@ import com.mybatisflex.core.service.IService;
 import com.zcw.cpbackend.model.dto.resumetemplate.ResumeTemplateAddRequest;
 import com.zcw.cpbackend.model.dto.resumetemplate.ResumeTemplateQueryRequest;
 import com.zcw.cpbackend.model.dto.resumetemplate.ResumeTemplateUpdateRequest;
-import com.zcw.cpbackend.model.entity.resume.template.ResumeTemplate;
+import com.zcw.cpbackend.model.entity.ResumeTemplate;
 import com.zcw.cpbackend.model.vo.ResumeTemplateVo;
 
 import java.util.List;

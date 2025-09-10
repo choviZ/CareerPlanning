@@ -1,7 +1,7 @@
 package com.zcw.cpbackend.model.vo;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.zcw.cpbackend.model.entity.resume.template.ResumeTemplate;
+import com.zcw.cpbackend.model.entity.ResumeTemplate;
 import com.zcw.cpbackend.model.dto.resume.ResumeContent;
 import lombok.Data;
 

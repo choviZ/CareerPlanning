@@ -1,7 +1,7 @@
 package com.zcw.cpbackend.mapper;
 
 import com.mybatisflex.core.BaseMapper;
-import com.zcw.cpbackend.model.entity.resume.template.ResumeTemplate;
+import com.zcw.cpbackend.model.entity.ResumeTemplate;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

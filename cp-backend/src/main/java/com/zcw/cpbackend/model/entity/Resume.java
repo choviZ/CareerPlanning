@@ -1,4 +1,4 @@
-package com.zcw.cpbackend.model.entity.resume;
+package com.zcw.cpbackend.model.entity;
 
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
