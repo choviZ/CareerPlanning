@@ -451,9 +451,12 @@ const publishResume = async () => {
 <style scoped>
 .resume-editor {
   height: 100vh;
+  width: 100vw;
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
 }
 
 .editor-header {
@@ -503,6 +506,7 @@ const publishResume = async () => {
   gap: 20px;
   padding: 20px;
   overflow: hidden;
+  width: 100%;
 }
 
 .editor-left {
